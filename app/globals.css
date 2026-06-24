@@ -2,7 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Archivo+Black&display=swap');
+
+@font-face {
+  font-family: 'Satoshi';
+  src: url('https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700&display=swap');
+}
 
 html {
   scroll-behavior: smooth;
@@ -16,7 +21,7 @@ body {
 
 /* Gold gradient text utility */
 .text-gold-gradient {
-  background: linear-gradient(135deg, #C9A96E 0%, #E2C992 50%, #C9A96E 100%);
+  background: linear-gradient(135deg, #D4AF37 0%, #F0D060 50%, #D4AF37 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -24,13 +29,13 @@ body {
 
 /* Subtle gold border glow */
 .gold-glow {
-  box-shadow: 0 0 20px rgba(201, 169, 110, 0.1);
+  box-shadow: 0 0 20px rgba(212, 175, 55, 0.15);
 }
 
 /* Divider line */
 .gold-divider {
   height: 1px;
-  background: linear-gradient(90deg, transparent, #C9A96E, transparent);
+  background: linear-gradient(90deg, transparent, #D4AF37, transparent);
 }
 
 /* Custom scrollbar */
@@ -45,10 +50,30 @@ body {
   border-radius: 3px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #C9A96E;
+  background: #D4AF37;
 }
 
 /* Input focus ring */
 input:focus {
   outline: none;
+}
+
+/* Forge flame animation */
+@keyframes forge-glow {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 0.7; }
+}
+
+.animate-forge {
+  animation: forge-glow 3s ease-in-out infinite;
+}
+
+/* Smooth page transitions */
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.6s ease-out forwards;
 }

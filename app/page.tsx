@@ -1,5 +1,9 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import Hero from "@/components/Hero";
 import Waitlist from "@/components/Waitlist";
+import Navbar from "@/components/Navbar";
 
 const services = [
   {
@@ -51,6 +55,7 @@ const tiers = [
       "Guest pass (1 per month)",
       "Access to member events",
     ],
+    highlighted: true,
   },
   {
     name: "Elite",
@@ -62,177 +67,53 @@ const tiers = [
       "Same-day booking guaranteed",
       "Two guest passes per month",
       "Exclusive quarterly experiences",
-      "Complimentary product samples",
     ],
   },
 ];
 
-const faqs = [
-  {
-    q: "When does VIRIL open?",
-    a: "We're currently in the final stages of development and plan to open our doors in late 2026. Waitlist members will receive early access invitations before the public launch.",
-  },
-  {
-    q: "Is VIRIL only for gay men?",
-    a: "VIRIL is designed specifically for gay men and the queer community. Our space, staff training, and services are all crafted with that community in mind. Everyone who respects and affirms our community is welcome.",
-  },
-  {
-    q: "What is the membership model?",
-    a: "VIRIL operates on a members-only basis to maintain an intimate, premium experience. Memberships are month-to-month with no long-term commitment required. Founding member pricing will be available to early waitlist signups.",
-  },
-  {
-    q: "Where exactly in West Hollywood?",
-    a: "We've secured a prime location in the heart of WeHo. The exact address will be revealed to waitlist members ahead of our public announcement. Expect a sleek, discreet storefront on one of the neighborhood's most walkable streets.",
-  },
-];
+export default function HomePage() {
+  const [user, setUser] = useState<{ name: string; email: string } | null>(null);
 
-function ServiceCard({ service }: { service: (typeof services)[0] }) {
-  return (
-    <div className="bg-charcoal border border-white/5 rounded-sm p-8 hover:border-gold/20 transition-colors duration-300">
-      <span className="text-gold text-2xl mb-4 block">{service.icon}</span>
-      <h3 className="font-playfair text-xl font-semibold text-white mb-3">
-        {service.name}
-      </h3>
-      <p className="font-inter text-muted-text text-sm leading-relaxed">
-        {service.description}
-      </p>
-    </div>
-  );
-}
+  useEffect(() => {
+    fetch("/api/auth/me")
+      .then((r) => (r.ok ? r.json() : null))
+      .then((d) => d?.user && setUser(d.user))
+      .catch(() => {});
+  }, []);
 
-function PricingCard({ tier }: { tier: (typeof tiers)[0] }) {
   return (
-    <div className="bg-charcoal border border-white/5 rounded-sm p-8 flex flex-col hover:border-gold/20 transition-colors duration-300">
-      <h3 className="font-playfair text-xl font-semibold text-white mb-2">
-        {tier.name}
-      </h3>
-      <div className="flex items-baseline gap-1 mb-6">
-        <span className="font-inter text-4xl font-bold text-gold">
-          {tier.price}
-        </span>
-        <span className="font-inter text-muted-text text-sm">{tier.period}</span>
-      </div>
-      <ul className="space-y-3 flex-1">
-        {tier.features.map((f) => (
-          <li
-            key={f}
-            className="flex items-start gap-3 text-muted-text text-sm font-inter"
-          >
-            <span className="text-gold mt-0.5">✦</span>
-            {f}
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
-}
+    <>
+      <Navbar user={user} />
 
-export default function Home() {
-  return (
-    <main className="bg-rich-black min-h-screen">
+      {/* Hero */}
       <Hero />
 
       {/* Services */}
       <section id="services" className="py-24 px-6">
         <div className="max-w-6xl mx-auto">
-          <h2 className="font-playfair text-4xl md:text-5xl font-semibold text-center text-white mb-4">
-            Services
-          </h2>
-          <p className="font-inter text-muted-text text-center max-w-lg mx-auto mb-16">
-            A curated menu of treatments designed for the modern man. Every
-            service is delivered with precision, discretion, and care.
-          </p>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="text-center mb-16">
+            <h2 className="font-playfair text-4xl md:text-5xl font-semibold text-white mb-4">
+              Our Services
+            </h2>
+            <div className="gold-divider w-20 mx-auto mb-6" />
+            <p className="font-satoshi text-muted-text max-w-xl mx-auto">
+              Every service is designed for comfort, results, and an experience
+              that keeps you coming back.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {services.map((s) => (
-              <ServiceCard key={s.name} service={s} />
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <div className="gold-divider max-w-6xl mx-auto" />
-
-      {/* Membership */}
-      <section id="membership" className="py-24 px-6">
-        <div className="max-w-5xl mx-auto">
-          <h2 className="font-playfair text-4xl md:text-5xl font-semibold text-center text-white mb-4">
-            Membership
-          </h2>
-          <p className="font-inter text-muted-text text-center max-w-lg mx-auto mb-16">
-            Three tiers, each designed around how often you want to unwind.
-            Cancel anytime.
-          </p>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {tiers.map((t) => (
-              <PricingCard key={t.name} tier={t} />
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <div className="gold-divider max-w-6xl mx-auto" />
-
-      {/* About */}
-      <section id="about" className="py-24 px-6">
-        <div className="max-w-3xl mx-auto text-center">
-          <h2 className="font-playfair text-4xl md:text-5xl font-semibold text-white mb-8">
-            Our Mission
-          </h2>
-          <p className="font-inter text-muted-text text-lg leading-relaxed mb-6">
-            VIRIL was founded on a simple belief: gay men deserve a luxury
-            wellness space that truly understands them. Not an afterthought in a
-            generic spa — a space built from the ground up with our community at
-            its center.
-          </p>
-          <p className="font-inter text-muted-text text-lg leading-relaxed">
-            Every detail — from our trained, affirming staff to our
-            thoughtfully designed interiors — is crafted to make you feel seen,
-            valued, and completely at ease. This is your space.
-          </p>
-        </div>
-      </section>
-
-      <div className="gold-divider max-w-6xl mx-auto" />
-
-      {/* Location */}
-      <section id="location" className="py-24 px-6">
-        <div className="max-w-3xl mx-auto text-center">
-          <h2 className="font-playfair text-4xl md:text-5xl font-semibold text-white mb-6">
-            West Hollywood
-          </h2>
-          <p className="font-inter text-muted-text text-lg leading-relaxed mb-8">
-            Nestled in the heart of WeHo — the cultural epicenter of queer Los
-            Angeles. Our flagship location offers a discreet, street-level
-            entrance and a sanctuary within.
-          </p>
-          <div className="inline-flex items-center gap-3 border border-white/10 rounded-sm px-6 py-3 bg-charcoal">
-            <span className="w-2 h-2 rounded-full bg-gold animate-pulse" />
-            <span className="font-inter text-muted-text text-sm">
-              Exact address revealed to waitlist members before public launch
-            </span>
-          </div>
-        </div>
-      </section>
-
-      <div className="gold-divider max-w-6xl mx-auto" />
-
-      {/* FAQ */}
-      <section id="faq" className="py-24 px-6">
-        <div className="max-w-3xl mx-auto">
-          <h2 className="font-playfair text-4xl md:text-5xl font-semibold text-center text-white mb-16">
-            FAQ
-          </h2>
-          <div className="space-y-6">
-            {faqs.map((item) => (
               <div
-                key={item.q}
-                className="bg-charcoal border border-white/5 rounded-sm p-6"
+                key={s.name}
+                className="bg-charcoal border border-white/5 rounded-sm p-6 hover:border-gold/30 transition-colors group"
               >
-                <h3 className="font-playfair text-lg font-semibold text-white mb-3">
-                  {item.q}
-                </h3>
-                <p className="font-inter text-muted-text text-sm leading-relaxed">
-                  {item.a}
+                <span className="text-gold text-3xl mb-4 block group-hover:scale-110 transition-transform">
+                  {s.icon}
+                </span>
+                <h3 className="font-playfair text-xl text-white mb-3">{s.name}</h3>
+                <p className="font-satoshi text-sm text-muted-text leading-relaxed">
+                  {s.description}
                 </p>
               </div>
             ))}
@@ -240,22 +121,134 @@ export default function Home() {
         </div>
       </section>
 
-      <div className="gold-divider max-w-6xl mx-auto" />
+      {/* About */}
+      <section id="about" className="py-24 px-6 bg-charcoal">
+        <div className="max-w-4xl mx-auto text-center">
+          <h2 className="font-playfair text-4xl md:text-5xl font-semibold text-white mb-4">
+            About VIRIL
+          </h2>
+          <div className="gold-divider w-20 mx-auto mb-8" />
+          <p className="font-satoshi text-lg text-muted-text leading-relaxed mb-8">
+            VIRIL was born from a simple idea: the gay men of West Hollywood deserve
+            a luxury spa experience built specifically for them. Not an afterthought.
+            Not a &ldquo;gender-neutral&rdquo; space that ignores the difference.
+            A space designed with intention &mdash; where every detail, from the
+            ambiance to the service protocols, reflects the community it serves.
+          </p>
+          <p className="font-satoshi text-lg text-muted-text leading-relaxed">
+            We are committed to providing an affirming, judgment-free environment
+            where you can relax, recharge, and feel at home. VIRIL is more than a
+            spa &mdash; it&apos;s a statement that luxury and identity belong together.
+          </p>
+        </div>
+      </section>
+
+      {/* Membership */}
+      <section id="membership" className="py-24 px-6">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="font-playfair text-4xl md:text-5xl font-semibold text-white mb-4">
+              Membership
+            </h2>
+            <div className="gold-divider w-20 mx-auto mb-6" />
+            <p className="font-satoshi text-muted-text max-w-xl mx-auto">
+              Join as a founding member and lock in exclusive early-access pricing.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {tiers.map((tier) => (
+              <div
+                key={tier.name}
+                className={`bg-charcoal border rounded-sm p-8 flex flex-col ${
+                  tier.highlighted
+                    ? "border-gold gold-glow"
+                    : "border-white/5"
+                }`}
+              >
+                {tier.highlighted && (
+                  <span className="font-inter text-xs text-gold bg-gold/10 border border-gold/20 px-3 py-1 rounded-sm w-fit mb-4 uppercase tracking-wider">
+                    Most Popular
+                  </span>
+                )}
+                <h3 className="font-playfair text-2xl text-white mb-2">{tier.name}</h3>
+                <div className="mb-6">
+                  <span className="font-inter text-4xl font-semibold text-white">
+                    {tier.price}
+                  </span>
+                  <span className="font-inter text-muted-text">{tier.period}</span>
+                </div>
+                <ul className="space-y-3 mb-8 flex-1">
+                  {tier.features.map((f, i) => (
+                    <li key={i} className="font-satoshi text-sm text-muted-text flex items-start gap-2">
+                      <span className="text-gold mt-0.5">&#10003;</span>
+                      {f}
+                    </li>
+                  ))}
+                </ul>
+                <a
+                  href="#waitlist"
+                  className={`font-satoshi text-sm text-center py-3 rounded-sm transition-colors ${
+                    tier.highlighted
+                      ? "bg-gold text-rich-black hover:bg-gold-hover"
+                      : "border border-gold/30 text-gold hover:bg-gold/10"
+                  }`}
+                >
+                  Join Waitlist
+                </a>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
 
       {/* Waitlist */}
       <Waitlist />
 
+      {/* Contact / Location */}
+      <section id="location" className="py-24 px-6 bg-charcoal">
+        <div className="max-w-4xl mx-auto text-center">
+          <h2 className="font-playfair text-4xl md:text-5xl font-semibold text-white mb-4">
+            Visit Us
+          </h2>
+          <div className="gold-divider w-20 mx-auto mb-8" />
+          <p className="font-satoshi text-lg text-muted-text mb-2">
+            West Hollywood, CA
+          </p>
+          <p className="font-inter text-sm text-muted-text mb-8">
+            Exact address to be announced at launch. We&apos;re finalizing our space on
+            Santa Monica Blvd in the heart of WeHo.
+          </p>
+
+          <div className="bg-charcoal border border-white/10 rounded-sm p-8 max-w-lg mx-auto">
+            <h3 className="font-playfair text-xl text-white mb-4">Get in Touch</h3>
+            <a
+              href="mailto:hello@virilspa.com"
+              className="font-inter text-gold hover:text-gold-hover transition-colors text-lg"
+            >
+              hello@virilspa.com
+            </a>
+            <div className="mt-6 flex items-center justify-center gap-6">
+              <a href="#" className="text-muted-text hover:text-white transition-colors text-sm font-inter">
+                Instagram
+              </a>
+              <a href="#" className="text-muted-text hover:text-white transition-colors text-sm font-inter">
+                Twitter
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Footer */}
-      <footer className="py-12 px-6 border-t border-white/5">
+      <footer className="py-8 px-6 border-t border-white/5">
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
-          <span className="font-playfair text-xl text-gold tracking-widest">
-            VIRIL
-          </span>
-          <p className="font-inter text-muted-text text-sm">
+          <p className="font-playfair text-gold text-sm tracking-widest">VIRIL</p>
+          <p className="font-inter text-xs text-muted-text">
             &copy; {new Date().getFullYear()} VIRIL Spa. All rights reserved.
           </p>
         </div>
       </footer>
-    </main>
+    </>
   );
 }
