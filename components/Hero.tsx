@@ -1,21 +1,6 @@
 "use client";
 
 export default function Hero() {
-  async function handleDemoLogin() {
-    try {
-      const res = await fetch("/api/auth/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: "demo@demo.app", password: "demo123" }),
-      });
-      if (res.ok) {
-        window.location.href = "/dashboard";
-      }
-    } catch {
-      // silently fail
-    }
-  }
-
   return (
     <section className="relative min-h-screen flex items-center justify-center px-6 overflow-hidden">
       {/* Ambient background effects */}
@@ -53,23 +38,14 @@ export default function Hero() {
           treatments in an affirming, upscale environment.
         </p>
 
-        {/* CTA buttons */}
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-          <a
-            href="#waitlist"
-            className="inline-flex items-center gap-2 border border-gold text-gold px-8 py-4 rounded-sm font-satoshi
-                       hover:bg-gold hover:text-rich-black transition-all duration-300 text-sm tracking-widest uppercase"
-          >
-            Join the Waitlist
-          </a>
-          <button
-            onClick={handleDemoLogin}
-            className="inline-flex items-center gap-2 bg-flame/10 border border-flame/30 text-flame px-8 py-4 rounded-sm font-satoshi
-                       hover:bg-flame/20 transition-all duration-300 text-sm tracking-widest uppercase"
-          >
-            View Live Demo
-          </button>
-        </div>
+        {/* CTA */}
+        <a
+          href="#waitlist"
+          className="inline-flex items-center gap-2 border border-gold text-gold px-8 py-4 rounded-sm font-satoshi
+                     hover:bg-gold hover:text-rich-black transition-all duration-300 text-sm tracking-widest uppercase"
+        >
+          Join the Waitlist
+        </a>
       </div>
     </section>
   );

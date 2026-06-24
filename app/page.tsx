@@ -32,42 +32,26 @@ const services = [
   },
 ];
 
-const tiers = [
+const faqs = [
   {
-    name: "Essentials",
-    price: "$149",
-    period: "/mo",
-    features: [
-      "Access to all spa facilities",
-      "One 60-minute service per month",
-      "Complimentary refreshments",
-      "Locker and towel service",
-    ],
+    question: "When does VIRIL open?",
+    answer:
+      "We're currently finalizing our space on Santa Monica Blvd in West Hollywood and are targeting a 2026 opening. Join the waitlist to be the first to know the exact date and secure founding member pricing.",
   },
   {
-    name: "Premium",
-    price: "$249",
-    period: "/mo",
-    features: [
-      "Everything in Essentials",
-      "Two 60-minute services per month",
-      "Priority booking window",
-      "Guest pass (1 per month)",
-      "Access to member events",
-    ],
-    highlighted: true,
+    question: "Is VIRIL only for gay men?",
+    answer:
+      "Yes. VIRIL was built specifically for gay men — a luxury spa experience designed with intention for our community, not adapted from a generic model. Every detail, from ambiance to service protocols, reflects the people we serve.",
   },
   {
-    name: "Elite",
-    price: "$399",
-    period: "/mo",
-    features: [
-      "Everything in Premium",
-      "Unlimited 60-minute services",
-      "Same-day booking guaranteed",
-      "Two guest passes per month",
-      "Exclusive quarterly experiences",
-    ],
+    question: "What services will be offered at launch?",
+    answer:
+      "Massage (deep tissue, Swedish, sports), facials and skincare, waxing, and body treatments (scrubs, wraps, therapies). Our full menu with pricing will be shared with waitlist members before launch.",
+  },
+  {
+    question: "How does membership work?",
+    answer:
+      "VIRIL will offer tiered memberships with founding member pricing for early sign-ups. Waitlist members get priority access to founding member rates and booking windows. Specific tiers and pricing will be announced closer to launch.",
   },
 ];
 
@@ -93,7 +77,7 @@ export default function HomePage() {
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="font-playfair text-4xl md:text-5xl font-semibold text-white mb-4">
-              Our Services
+              What We&apos;re Building
             </h2>
             <div className="gold-divider w-20 mx-auto mb-6" />
             <p className="font-satoshi text-muted-text max-w-xl mx-auto">
@@ -143,59 +127,28 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Membership */}
-      <section id="membership" className="py-24 px-6">
-        <div className="max-w-6xl mx-auto">
+      {/* FAQ */}
+      <section id="faq" className="py-24 px-6">
+        <div className="max-w-3xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="font-playfair text-4xl md:text-5xl font-semibold text-white mb-4">
-              Membership
+              Frequently Asked Questions
             </h2>
             <div className="gold-divider w-20 mx-auto mb-6" />
-            <p className="font-satoshi text-muted-text max-w-xl mx-auto">
-              Join as a founding member and lock in exclusive early-access pricing.
-            </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {tiers.map((tier) => (
+          <div className="space-y-6">
+            {faqs.map((faq) => (
               <div
-                key={tier.name}
-                className={`bg-charcoal border rounded-sm p-8 flex flex-col ${
-                  tier.highlighted
-                    ? "border-gold gold-glow"
-                    : "border-white/5"
-                }`}
+                key={faq.question}
+                className="bg-charcoal border border-white/5 rounded-sm p-6"
               >
-                {tier.highlighted && (
-                  <span className="font-inter text-xs text-gold bg-gold/10 border border-gold/20 px-3 py-1 rounded-sm w-fit mb-4 uppercase tracking-wider">
-                    Most Popular
-                  </span>
-                )}
-                <h3 className="font-playfair text-2xl text-white mb-2">{tier.name}</h3>
-                <div className="mb-6">
-                  <span className="font-inter text-4xl font-semibold text-white">
-                    {tier.price}
-                  </span>
-                  <span className="font-inter text-muted-text">{tier.period}</span>
-                </div>
-                <ul className="space-y-3 mb-8 flex-1">
-                  {tier.features.map((f, i) => (
-                    <li key={i} className="font-satoshi text-sm text-muted-text flex items-start gap-2">
-                      <span className="text-gold mt-0.5">&#10003;</span>
-                      {f}
-                    </li>
-                  ))}
-                </ul>
-                <a
-                  href="#waitlist"
-                  className={`font-satoshi text-sm text-center py-3 rounded-sm transition-colors ${
-                    tier.highlighted
-                      ? "bg-gold text-rich-black hover:bg-gold-hover"
-                      : "border border-gold/30 text-gold hover:bg-gold/10"
-                  }`}
-                >
-                  Join Waitlist
-                </a>
+                <h3 className="font-playfair text-lg text-white mb-3">
+                  {faq.question}
+                </h3>
+                <p className="font-satoshi text-sm text-muted-text leading-relaxed">
+                  {faq.answer}
+                </p>
               </div>
             ))}
           </div>

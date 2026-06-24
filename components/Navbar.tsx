@@ -26,8 +26,8 @@ export default function Navbar({ user }: { user?: { name: string; email: string 
           <a href="#about" className="font-inter text-sm text-muted-text hover:text-white transition-colors">
             About
           </a>
-          <a href="#membership" className="font-inter text-sm text-muted-text hover:text-white transition-colors">
-            Membership
+          <a href="#faq" className="font-inter text-sm text-muted-text hover:text-white transition-colors">
+            FAQ
           </a>
           <a href="#location" className="font-inter text-sm text-muted-text hover:text-white transition-colors">
             Location
