@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "VIRIL Spa | West Hollywood's First Luxury Spa for Gay Men",
+  title: "Goon | Premium Spa for Gay Men in West Hollywood",
   description:
-    "The first members-only luxury spa for gay men in West Hollywood. Massage, facials, waxing, and body treatments in an affirming, upscale environment. Coming Soon.",
+    "A members-only luxury spa and grooming destination designed exclusively for gay men. Massage, facials, waxing, and body treatments in West Hollywood. Coming Soon.",
 };
 
 export default function RootLayout({

@@ -41,10 +41,10 @@ export default function Waitlist() {
   return (
     <section id="waitlist" className="py-24 px-6">
       <div className="max-w-xl mx-auto text-center">
-        <h2 className="font-playfair text-4xl md:text-5xl font-semibold text-white mb-4">
+        <h2 className="font-manrope text-4xl md:text-5xl font-semibold text-white mb-4">
           Be the First
         </h2>
-        <p className="font-inter text-muted-text mb-10">
+        <p className="font-source-sans text-muted-text mb-10">
           Join the waitlist for early access and founding member pricing.
         </p>
 
@@ -58,12 +58,12 @@ export default function Waitlist() {
               if (status !== "idle") setStatus("idle");
             }}
             placeholder="your@email.com"
-            className="flex-1 bg-charcoal border border-white/10 rounded-sm px-5 py-4 text-white font-inter placeholder:text-white/30 focus:border-gold transition-colors"
+            className="flex-1 bg-charcoal border border-white/10 rounded-sm px-5 py-4 text-white font-source-sans placeholder:text-white/30 focus:border-gold transition-colors"
           />
           <button
             type="submit"
             disabled={status === "loading"}
-            className="bg-gold text-rich-black px-8 py-4 rounded-sm font-inter font-semibold text-sm tracking-widest uppercase hover:bg-gold/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            className="bg-gold text-rich-black px-8 py-4 rounded-sm font-manrope font-semibold text-sm tracking-widest uppercase hover:bg-gold/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {status === "loading" ? "Joining..." : "Join Waitlist"}
           </button>
@@ -71,7 +71,7 @@ export default function Waitlist() {
 
         {status !== "idle" && (
           <p
-            className={`mt-4 font-inter text-sm ${
+            className={`mt-4 font-source-sans text-sm ${
               status === "success" ? "text-gold" : "text-red-400"
             }`}
           >

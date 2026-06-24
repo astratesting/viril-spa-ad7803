@@ -3,66 +3,30 @@
 import Link from "next/link";
 import { useState } from "react";
 
-export default function Navbar({ user }: { user?: { name: string; email: string } | null }) {
+export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
-
-  async function handleLogout() {
-    await fetch("/api/auth/logout", { method: "POST" });
-    window.location.href = "/";
-  }
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-rich-black/80 backdrop-blur-md border-b border-white/5">
       <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
-        <Link href="/" className="font-playfair text-xl text-gold tracking-widest">
-          VIRIL
+        <Link href="/" className="font-manrope text-xl text-gold tracking-widest">
+          GOON
         </Link>
 
         {/* Desktop nav */}
         <div className="hidden md:flex items-center gap-8">
-          <a href="#services" className="font-inter text-sm text-muted-text hover:text-white transition-colors">
-            Services
+          <a href="#services" className="font-manrope text-sm text-muted-text hover:text-white transition-colors">
+            What We&apos;re Building
           </a>
-          <a href="#about" className="font-inter text-sm text-muted-text hover:text-white transition-colors">
-            About
-          </a>
-          <a href="#faq" className="font-inter text-sm text-muted-text hover:text-white transition-colors">
+          <a href="#faq" className="font-manrope text-sm text-muted-text hover:text-white transition-colors">
             FAQ
           </a>
-          <a href="#location" className="font-inter text-sm text-muted-text hover:text-white transition-colors">
-            Location
+          <a
+            href="#waitlist"
+            className="font-manrope text-sm bg-gold text-rich-black px-4 py-2 rounded-sm hover:bg-gold-hover transition-colors"
+          >
+            Join Waitlist
           </a>
-          {user ? (
-            <div className="flex items-center gap-4">
-              <Link
-                href="/dashboard"
-                className="font-inter text-sm text-gold hover:text-gold-hover transition-colors"
-              >
-                Dashboard
-              </Link>
-              <button
-                onClick={handleLogout}
-                className="font-inter text-sm text-muted-text hover:text-white transition-colors"
-              >
-                Sign Out
-              </button>
-            </div>
-          ) : (
-            <div className="flex items-center gap-4">
-              <Link
-                href="/login"
-                className="font-inter text-sm text-muted-text hover:text-white transition-colors"
-              >
-                Sign In
-              </Link>
-              <Link
-                href="/register"
-                className="font-inter text-sm bg-gold text-rich-black px-4 py-2 rounded-sm hover:bg-gold-hover transition-colors"
-              >
-                Join
-              </Link>
-            </div>
-          )}
         </div>
 
         {/* Mobile menu button */}
@@ -84,37 +48,15 @@ export default function Navbar({ user }: { user?: { name: string; email: string 
       {/* Mobile menu */}
       {mobileOpen && (
         <div className="md:hidden bg-charcoal border-t border-white/5 px-6 py-4 space-y-3">
-          <a href="#services" onClick={() => setMobileOpen(false)} className="block font-inter text-sm text-muted-text hover:text-white">
-            Services
+          <a href="#services" onClick={() => setMobileOpen(false)} className="block font-manrope text-sm text-muted-text hover:text-white">
+            What We&apos;re Building
           </a>
-          <a href="#about" onClick={() => setMobileOpen(false)} className="block font-inter text-sm text-muted-text hover:text-white">
-            About
+          <a href="#faq" onClick={() => setMobileOpen(false)} className="block font-manrope text-sm text-muted-text hover:text-white">
+            FAQ
           </a>
-          <a href="#membership" onClick={() => setMobileOpen(false)} className="block font-inter text-sm text-muted-text hover:text-white">
-            Membership
+          <a href="#waitlist" onClick={() => setMobileOpen(false)} className="block font-manrope text-sm text-gold hover:text-gold-hover">
+            Join Waitlist
           </a>
-          <a href="#location" onClick={() => setMobileOpen(false)} className="block font-inter text-sm text-muted-text hover:text-white">
-            Location
-          </a>
-          {user ? (
-            <>
-              <Link href="/dashboard" onClick={() => setMobileOpen(false)} className="block font-inter text-sm text-gold">
-                Dashboard
-              </Link>
-              <button onClick={handleLogout} className="block font-inter text-sm text-muted-text hover:text-white">
-                Sign Out
-              </button>
-            </>
-          ) : (
-            <>
-              <Link href="/login" onClick={() => setMobileOpen(false)} className="block font-inter text-sm text-muted-text hover:text-white">
-                Sign In
-              </Link>
-              <Link href="/register" onClick={() => setMobileOpen(false)} className="block font-inter text-sm text-gold">
-                Join
-              </Link>
-            </>
-          )}
         </div>
       )}
     </nav>
