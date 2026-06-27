@@ -26,7 +26,7 @@ export default function Waitlist() {
 
       if (res.ok) {
         setStatus("success");
-        setMessage(data.message || "You're on the list.");
+        setMessage(data.message || "Your application has been received.");
         setEmail("");
       } else {
         setStatus("error");
@@ -39,17 +39,18 @@ export default function Waitlist() {
   }
 
   return (
-    <section id="waitlist" className="py-24 px-6">
+    <section id="waitlist" className="py-24 px-6 bg-[#1C1C1E]">
       <div className="max-w-xl mx-auto text-center">
-        <p className="font-inter text-[#C8A45C] text-sm tracking-widest uppercase mb-4">
+        <p className="font-inter text-[#B8894D] text-sm tracking-[0.25em] uppercase mb-4">
           Request an Invitation
         </p>
-        <h2 className="font-playfair text-4xl md:text-5xl font-semibold text-[#F5F0E8] mb-4">
-          Be the first to be invited
+        <h2 className="font-playfair text-4xl md:text-5xl font-semibold text-[#F5F0EB] mb-4">
+          Join the Waitlist
         </h2>
-        <p className="font-inter text-[#F5F0E8]/70 mb-10">
-          Join the waitlist for founding member pricing and early access. No spam,
-          no public list — only a quiet note when the doors open.
+        <p className="font-inter text-base text-[#F5F0EB]/70 mb-10 leading-relaxed">
+          Founding membership is limited. Leave your address and you will be the
+          first invited when the doors of Goon open in West Hollywood. No spam,
+          no public list — only a quiet note when the house is ready.
         </p>
 
         <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3">
@@ -62,21 +63,21 @@ export default function Waitlist() {
               if (status !== "idle") setStatus("idle");
             }}
             placeholder="your@email.com"
-            className="flex-1 bg-[#3E2723]/40 border border-[#C8A45C]/20 rounded-sm px-5 py-4 text-[#F5F0E8] font-inter placeholder:text-[#F5F0E8]/40 focus:border-[#C8A45C] transition-colors"
+            className="flex-1 bg-[#6B1D2F]/15 border border-[#B8894D]/25 rounded-sm px-5 py-4 text-[#F5F0EB] font-inter placeholder:text-[#F5F0EB]/40 focus:border-[#B8894D] transition-colors"
           />
           <button
             type="submit"
             disabled={status === "loading"}
-            className="border border-[#C8A45C] text-[#C8A45C] px-8 py-4 rounded-sm font-inter text-sm tracking-widest uppercase hover:bg-[#C8A45C] hover:text-[#3E2723] transition-all duration-300 disabled:opacity-50"
+            className="border border-[#B8894D] text-[#B8894D] px-8 py-4 rounded-sm font-inter text-sm tracking-[0.2em] uppercase hover:bg-[#B8894D] hover:text-[#1C1C1E] transition-all duration-300 disabled:opacity-50"
           >
-            {status === "loading" ? "Sending..." : "Request"}
+            {status === "loading" ? "Sending..." : "Apply for Membership"}
           </button>
         </form>
 
         {message && (
           <p
             className={`mt-6 font-inter text-sm ${
-              status === "success" ? "text-[#C8A45C]" : "text-[#6B0F1A]"
+              status === "success" ? "text-[#B8894D]" : "text-[#6B1D2F]"
             }`}
           >
             {message}

@@ -5,9 +5,9 @@ import "./globals.css";
 const GA_ID = process.env.NEXT_PUBLIC_GA_ID;
 
 export const metadata: Metadata = {
-  title: "Goon | Members-Only Spa & Salon — Coming Soon",
+  title: "Goon | A Private Members Club — Coming Soon",
   description:
-    "Goon is a members-only spa and salon exclusively for verified lesbian women and gay men. A private house of beauty, discretion, and belonging. Coming soon.",
+    "Goon is an exclusive private members club in West Hollywood delivering authentic old European aristocratic luxury for high-net-worth gay and lesbian individuals. The Last Great Sanctuary. Coming soon.",
 };
 
 export default function RootLayout({

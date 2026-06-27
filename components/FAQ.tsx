@@ -1,48 +1,32 @@
 const faqs = [
   {
     q: "What exactly is Goon?",
-    a: "Goon is a members-only spa and salon exclusively for verified lesbian women and gay men. It is a private house offering cut, color, barbering, massage, facials, and body therapies in a setting designed for our community.",
+    a: "Goon is a private members club with a physical venue in West Hollywood, delivering an authentic old European aristocratic luxury experience through curated in-person services for high-net-worth gay and lesbian individuals.",
   },
   {
     q: "Why a members-only model?",
-    a: "Membership protects the character of the house. By verifying that every member belongs to our community, we create a space where no one has to explain, perform, or defend themselves. Discretion and belonging are the product, not just the services.",
+    a: "Membership protects the character of the house. By verifying that every member belongs to our community, we create a space where no one has to explain, perform, or defend themselves. Discretion and belonging are the product — not just the services.",
   },
   {
-    q: "Who can join?",
-    a: "Lesbian women and gay men over the age of 18 may request an invitation. Verification is required before membership is granted — this is how we keep Goon what it is.",
-  },
-  {
-    q: "How does verification work?",
-    a: "We are finalizing the verification process and will share details with waitlist members first. It will be respectful, confidential, and as lightweight as we can make it while keeping the house trustworthy.",
-  },
-  {
-    q: "Where will Goon be located?",
-    a: "We are not announcing a location yet. When you join the waitlist you will be among the first to receive those details as they are confirmed.",
+    q: "Who can apply for membership?",
+    a: "Gay men and lesbian women of means may request an invitation. Verification is required before membership is granted — this is how we keep Goon what it is.",
   },
   {
     q: "When does Goon open?",
-    a: "We are honest: we do not have a fixed opening date. Build is underway, and founding members on the waitlist will be the first invited when we open our doors.",
-  },
-  {
-    q: "How much does membership cost?",
-    a: "Pricing tiers for founding members will be shared with the waitlist before public launch. We are not publishing numbers today because they are not final.",
-  },
-  {
-    q: "Is my membership confidential?",
-    a: "Yes. Membership is never published, sold, or shared. Private entrances, single-use suites, and a strict no-photography policy are part of the house standard.",
+    a: "We are honest: we do not have a fixed opening date. The house is being forged now, and founding members on the waitlist will be the first invited when the doors open.",
   },
 ];
 
 export default function FAQ() {
   return (
-    <section id="faq" className="py-24 px-6">
+    <section id="faq" className="py-24 px-6 bg-[#141415]">
       <div className="max-w-3xl mx-auto">
         <div className="text-center mb-16">
-          <p className="font-inter text-[#C8A45C] text-sm tracking-widest uppercase mb-4">
+          <p className="font-inter text-[#B8894D] text-sm tracking-[0.25em] uppercase mb-4">
             Questions, answered honestly
           </p>
-          <h2 className="font-playfair text-4xl md:text-5xl font-semibold text-[#F5F0E8] mb-6">
-            Before you request an invitation
+          <h2 className="font-playfair text-4xl md:text-5xl font-semibold text-[#F5F0EB] mb-6">
+            Before you apply
           </h2>
           <div className="gold-divider w-24 mx-auto" />
         </div>
@@ -51,17 +35,17 @@ export default function FAQ() {
           {faqs.map((f) => (
             <details
               key={f.q}
-              className="group border border-[#C8A45C]/15 bg-[#3E2723]/30 rounded-sm px-6 py-5 open:border-[#C8A45C]/40 transition-colors"
+              className="group border border-[#B8894D]/20 bg-[#1C1C1E]/60 rounded-sm px-6 py-5 open:border-[#B8894D]/50 transition-colors"
             >
               <summary className="flex items-center justify-between cursor-pointer list-none">
-                <span className="font-playfair text-lg text-[#F5F0E8] pr-4">
+                <span className="font-playfair text-lg text-[#F5F0EB] pr-4">
                   {f.q}
                 </span>
-                <span className="text-[#C8A45C] text-xl shrink-0 transition-transform group-open:rotate-45">
+                <span className="text-[#B8894D] text-xl shrink-0 transition-transform group-open:rotate-45">
                   +
                 </span>
               </summary>
-              <p className="font-inter text-sm text-[#F5F0E8]/70 leading-relaxed mt-4">
+              <p className="font-inter text-sm text-[#F5F0EB]/70 leading-relaxed mt-4">
                 {f.a}
               </p>
             </details>
