@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Goon | Premium Spa for Gay Men in West Hollywood",
+  title: "Goon — A Private Sanctuary for the Discerning",
   description:
-    "A members-only luxury spa and grooming destination designed exclusively for gay men. Massage, facials, waxing, and body treatments in West Hollywood. Coming Soon.",
+    "Goon is an identity-verified, members-only spa and salon for lesbian and gay men — built in the spirit of an old European private members club. By invitation. Coming Soon.",
 };
 
 export default function RootLayout({
