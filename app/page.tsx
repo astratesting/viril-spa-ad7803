@@ -104,7 +104,7 @@ export default function Home() {
       >
         {/* Compass-rose / crest watermark */}
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-[0.05]" aria-hidden="true">
-          <svg width="760" height="760" viewBox="0 0 200 200" fill="none" stroke="#C5A55A" strokeWidth="0.4">
+          <svg width="760" height="760" viewBox="0 0 200 200" fill="none" stroke="#C9A84C" strokeWidth="0.4">
             <circle cx="100" cy="100" r="95" />
             <circle cx="100" cy="100" r="72" />
             <circle cx="100" cy="100" r="48" />
