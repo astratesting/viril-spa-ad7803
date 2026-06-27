@@ -9,14 +9,21 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        charcoal: "#121212",
-        "rich-black": "#0A0A0A",
-        gold: "#C9A96E",
-        "muted-text": "#A3A3A3",
+        ink: "#0A0A0B",
+        "ink-soft": "#111113",
+        "ink-line": "#1C1C20",
+        flame: "#E8592B",
+        magenta: "#D42A6E",
+        acid: "#7DDA5A",
+        bone: "#F4F1EC",
+        ash: "#A3A3A3",
       },
       fontFamily: {
-        inter: ["Inter", "sans-serif"],
-        playfair: ['"Playfair Display"', "serif"],
+        satoshi: ["Satoshi", "system-ui", "sans-serif"],
+        archivo: ['"Archivo Black"', "system-ui", "sans-serif"],
+      },
+      letterSpacing: {
+        salon: "0.35em",
       },
     },
   },

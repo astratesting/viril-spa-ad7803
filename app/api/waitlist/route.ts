@@ -6,7 +6,10 @@ import path from "path";
 const DATA_FILE = path.join(process.cwd(), "data", "waitlist.json");
 
 interface WaitlistEntry {
+  name: string;
   email: string;
+  referral: string;
+  tier: string;
   subscribedAt: string;
 }
 
@@ -29,10 +32,19 @@ async function saveEntries(entries: WaitlistEntry[]) {
   await writeFile(DATA_FILE, JSON.stringify(entries, null, 2));
 }
 
+const VALID_TIERS = new Set(["founding", "patron", "benefactor"]);
+
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { email } = body;
+    const { name, email, referral, tier } = body;
+
+    if (!name || typeof name !== "string" || !name.trim()) {
+      return NextResponse.json(
+        { error: "Full name is required." },
+        { status: 400 }
+      );
+    }
 
     if (!email || typeof email !== "string") {
       return NextResponse.json(
@@ -50,20 +62,35 @@ export async function POST(request: Request) {
       );
     }
 
+    if (!tier || !VALID_TIERS.has(tier)) {
+      return NextResponse.json(
+        { error: "Please select a membership tier." },
+        { status: 400 }
+      );
+    }
+
+    const entry: WaitlistEntry = {
+      name: name.trim(),
+      email: normalized,
+      referral: typeof referral === "string" ? referral.trim() : "",
+      tier,
+      subscribedAt: new Date().toISOString(),
+    };
+
     const entries = await loadEntries();
 
     if (entries.some((e) => e.email === normalized)) {
       return NextResponse.json(
-        { message: "You're already on the waitlist. We'll be in touch." },
+        { message: "You're already on the list. We'll be in touch." },
         { status: 200 }
       );
     }
 
-    entries.push({ email: normalized, subscribedAt: new Date().toISOString() });
+    entries.push(entry);
     await saveEntries(entries);
 
     return NextResponse.json(
-      { message: "Welcome to the waitlist. We'll be in touch soon." },
+      { message: "Your interest has been received. The house will be in touch." },
       { status: 201 }
     );
   } catch {
