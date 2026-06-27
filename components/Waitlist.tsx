@@ -42,10 +42,10 @@ export default function Waitlist() {
     <section id="waitlist" className="py-24 px-6 bg-[#1C1C1E]">
       <div className="max-w-xl mx-auto text-center">
         <p className="font-inter text-[#B8894D] text-sm tracking-[0.25em] uppercase mb-4">
-          Request an Invitation
+          Founding Membership
         </p>
         <h2 className="font-playfair text-4xl md:text-5xl font-semibold text-[#F5F0EB] mb-4">
-          Join the Waitlist
+          Request an Invitation
         </h2>
         <p className="font-inter text-base text-[#F5F0EB]/70 mb-10 leading-relaxed">
           Founding membership is limited. Leave your address and you will be the
@@ -70,7 +70,7 @@ export default function Waitlist() {
             disabled={status === "loading"}
             className="border border-[#B8894D] text-[#B8894D] px-8 py-4 rounded-sm font-inter text-sm tracking-[0.2em] uppercase hover:bg-[#B8894D] hover:text-[#1C1C1E] transition-all duration-300 disabled:opacity-50"
           >
-            {status === "loading" ? "Sending..." : "Apply for Membership"}
+            {status === "loading" ? "Sending..." : "Request Founding Membership"}
           </button>
         </form>
 

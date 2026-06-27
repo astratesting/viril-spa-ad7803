@@ -1,22 +1,22 @@
 const benefits = [
   {
-    title: "A Sanctuary Forged for Our Own",
-    body: "Membership is extended only to verified gay men and lesbian women of means. The result is a private house where you are surrounded by peers — never a room to explain or defend.",
+    title: "Identity-Verified Sanctuary",
+    body: "Membership is extended only to verified high-net-worth LGBTQ+ individuals. The result is a private house where you are surrounded by peers — never a room to explain or defend.",
     icon: "✦",
   },
   {
-    title: "Old European Aristocratic Refinement",
+    title: "Old European Aristocratic Ambiance",
     body: "Burgundy velvet, dark wood, polished brass, and cream linen. An atmosphere drawn from the great European houses — quiet, unhurried, and entirely yours.",
     icon: "◆",
   },
   {
-    title: "Curated In-Person Services",
-    body: "Grooming, spa, table, and lounge — each delivered by practitioners who understand the character of the house and the members it serves.",
+    title: "Curated Cultural Events",
+    body: "Members-only salons, intimate performances, and gatherings programmed with care — a calendar shaped to deepen the character of the house and the community within it.",
     icon: "⬡",
   },
   {
-    title: "Absolute Discretion",
-    body: "Private entrances, single-use suites, and a strict no-photography policy. What happens inside Goon stays inside Goon — always.",
+    title: "Tiered Membership · $1,200–$3,500/yr",
+    body: "A graduated membership shaped to your relationship with the house — from associate access to full founding privileges. Dues are transparent; the experience is not.",
     icon: "◈",
   },
 ];
@@ -27,7 +27,7 @@ export default function Benefits() {
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-16">
           <p className="font-inter text-[#B8894D] text-sm tracking-[0.25em] uppercase mb-4">
-            Our Vision
+            What We&rsquo;re Building
           </p>
           <h2 className="font-playfair text-4xl md:text-5xl font-semibold text-[#F5F0EB] mb-6">
             A sanctuary, deliberately forged.
@@ -45,7 +45,7 @@ export default function Benefits() {
           {benefits.map((b) => (
             <div
               key={b.title}
-              className="border border-[#B8894D]/20 bg-[#6B1D2F]/10 p-8 rounded-sm hover:border-[#B8894D]/50 transition-colors duration-300"
+              className="border border-[#B8894D]/20 bg-[#4B2A2C]/10 p-8 rounded-sm hover:border-[#B8894D]/50 transition-colors duration-300"
             >
               <div className="text-[#B8894D] text-2xl mb-4">{b.icon}</div>
               <h3 className="font-playfair text-lg font-semibold text-[#F5F0EB] mb-3 leading-snug">

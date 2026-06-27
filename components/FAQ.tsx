@@ -1,25 +1,25 @@
 const faqs = [
   {
-    q: "What exactly is Goon?",
-    a: "Goon is a private members club with a physical venue in West Hollywood, delivering an authentic old European aristocratic luxury experience through curated in-person services for high-net-worth gay and lesbian individuals.",
+    q: "What are the membership criteria?",
+    a: "Goon is a private members club for verified high-net-worth gay and lesbian individuals. Prospective members submit a request, complete identity verification, and are reviewed before an invitation is extended. This is how we keep Goon what it is — a sanctuary, not a venue.",
   },
   {
-    q: "Why a members-only model?",
-    a: "Membership protects the character of the house. By verifying that every member belongs to our community, we create a space where no one has to explain, perform, or defend themselves. Discretion and belonging are the product — not just the services.",
-  },
-  {
-    q: "Who can apply for membership?",
-    a: "Gay men and lesbian women of means may request an invitation. Verification is required before membership is granted — this is how we keep Goon what it is.",
+    q: "Where is Goon located?",
+    a: "Goon is being forged in West Hollywood — a private physical house, not a pop-up. The exact address is shared only with verified members, by design. Public access is not part of the model.",
   },
   {
     q: "When does Goon open?",
-    a: "We are honest: we do not have a fixed opening date. The house is being forged now, and founding members on the waitlist will be the first invited when the doors open.",
+    a: "We are honest: there is no fixed opening date yet. The house is being built now, and founding members on the waitlist will be the first invited when the doors open. We will not promise a date we cannot keep.",
+  },
+  {
+    q: "How much does membership cost?",
+    a: "Membership is tiered from $1,200 to $3,500 per year, graduated by the level of access and founding privileges you wish to hold. Dues are transparent and disclosed in full during the invitation process — there are no hidden fees.",
   },
 ];
 
 export default function FAQ() {
   return (
-    <section id="faq" className="py-24 px-6 bg-[#141415]">
+    <section id="faq" className="py-24 px-6 bg-[#1C1C1E]">
       <div className="max-w-3xl mx-auto">
         <div className="text-center mb-16">
           <p className="font-inter text-[#B8894D] text-sm tracking-[0.25em] uppercase mb-4">
@@ -35,7 +35,7 @@ export default function FAQ() {
           {faqs.map((f) => (
             <details
               key={f.q}
-              className="group border border-[#B8894D]/20 bg-[#1C1C1E]/60 rounded-sm px-6 py-5 open:border-[#B8894D]/50 transition-colors"
+              className="group border border-[#B8894D]/20 bg-[#141415]/60 rounded-sm px-6 py-5 open:border-[#B8894D]/50 transition-colors"
             >
               <summary className="flex items-center justify-between cursor-pointer list-none">
                 <span className="font-playfair text-lg text-[#F5F0EB] pr-4">
