@@ -5,9 +5,9 @@ import "./globals.css";
 const GA_ID = process.env.NEXT_PUBLIC_GA_ID;
 
 export const metadata: Metadata = {
-  title: "GOON — The Salon Returns | Private Members Club",
+  title: "Goon — Coming Soon | A Private Members Club",
   description:
-    "GOON is an exclusive private members club for high-net-worth gay and lesbian individuals. Aristocratic queer luxury, arriving in West Hollywood / Beverly Hills. Founding membership by application.",
+    "Goon is West Hollywood's first members-only club for high-net-worth gay and lesbian individuals — a private sanctuary where old-world elegance meets authentic community. Coming soon. Apply for membership.",
 };
 
 export default function RootLayout({

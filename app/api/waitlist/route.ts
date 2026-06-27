@@ -6,10 +6,10 @@ import path from "path";
 const DATA_FILE = path.join(process.cwd(), "data", "waitlist.json");
 
 interface WaitlistEntry {
-  name: string;
+  name?: string;
   email: string;
-  referral: string;
-  tier: string;
+  referral?: string;
+  tier?: string;
   subscribedAt: string;
 }
 
@@ -37,14 +37,7 @@ const VALID_TIERS = new Set(["founding", "patron", "benefactor"]);
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { name, email, referral, tier } = body;
-
-    if (!name || typeof name !== "string" || !name.trim()) {
-      return NextResponse.json(
-        { error: "Full name is required." },
-        { status: 400 }
-      );
-    }
+    const { email, name, referral, tier } = body ?? {};
 
     if (!email || typeof email !== "string") {
       return NextResponse.json(
@@ -62,20 +55,20 @@ export async function POST(request: Request) {
       );
     }
 
-    if (!tier || !VALID_TIERS.has(tier)) {
+    if (tier !== undefined && tier !== "" && !VALID_TIERS.has(tier)) {
       return NextResponse.json(
-        { error: "Please select a membership tier." },
+        { error: "Please select a valid membership tier." },
         { status: 400 }
       );
     }
 
     const entry: WaitlistEntry = {
-      name: name.trim(),
       email: normalized,
-      referral: typeof referral === "string" ? referral.trim() : "",
-      tier,
       subscribedAt: new Date().toISOString(),
     };
+    if (typeof name === "string" && name.trim()) entry.name = name.trim();
+    if (typeof referral === "string" && referral.trim()) entry.referral = referral.trim();
+    if (typeof tier === "string" && tier) entry.tier = tier;
 
     const entries = await loadEntries();
 
@@ -90,7 +83,7 @@ export async function POST(request: Request) {
     await saveEntries(entries);
 
     return NextResponse.json(
-      { message: "Your interest has been received. The house will be in touch." },
+      { message: "Your application has been received. The house will be in touch." },
       { status: 201 }
     );
   } catch {
