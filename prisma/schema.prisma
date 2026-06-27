@@ -1,0 +1,155 @@
+// Prisma schema for Goon — PostgreSQL (production).
+// In the sandbox/preview demo (no DATABASE_URL), the app uses a local
+// JSON-file store (lib/db.ts) that mirrors these models, so no Postgres
+// connection is required to run the product.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  pending          // signed up, not yet approved
+  pending_payment  // approved, needs to pay dues
+  member           // active, dues paid
+  admin            // administrator
+}
+
+model User {
+  id                    String    @id @default(cuid())
+  email                 String    @unique
+  name                  String
+  password_hash         String?
+  phone                 String?
+  referral_source       String?
+  role                  UserRole  @default(pending)
+  membership_tier       String?
+  membership_expires_at DateTime?
+  avatar_url            String?
+  created_at            DateTime  @default(now())
+  updated_at            DateTime  @updatedAt
+
+  membership_applications MembershipApplication[]
+  event_attendees         EventAttendee[]
+  parlor_bookings         ParlorBooking[]
+  payments                Payment[]
+  audit_logs              AuditLog[]
+}
+
+model WaitlistEntry {
+  id         String   @id @default(cuid())
+  email      String   @unique
+  created_at DateTime @default(now())
+}
+
+model MembershipApplication {
+  id               String   @id @default(cuid())
+  user_id          String?
+  user             User?    @relation(fields: [user_id], references: [id])
+  full_name        String
+  email            String
+  phone            String?
+  referral_source  String?
+  status           String   @default("pending")
+  reviewed_by      String?
+  reviewed_at      DateTime?
+  rejection_reason String?
+  created_at       DateTime @default(now())
+}
+
+model MembershipTier {
+  id          String   @id @default(cuid())
+  name        String   @unique
+  price_cents Int
+  description String
+  benefits    String[]
+  is_active   Boolean  @default(true)
+  created_at  DateTime @default(now())
+}
+
+model Event {
+  id          String   @id @default(cuid())
+  title       String
+  description String
+  date        DateTime
+  time        String
+  end_time    String?
+  location    String
+  capacity    Int
+  image_url   String?
+  is_private  Boolean  @default(true)
+  created_by  String
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
+
+  attendees EventAttendee[]
+}
+
+model EventAttendee {
+  id        String   @id @default(cuid())
+  user_id   String
+  user      User     @relation(fields: [user_id], references: [id])
+  event_id  String
+  event     Event    @relation(fields: [event_id], references: [id])
+  created_at DateTime @default(now())
+
+  @@unique([user_id, event_id])
+}
+
+model Parlor {
+  id          String   @id @default(cuid())
+  name        String
+  description String
+  capacity    Int
+  price_cents Int?
+  image_url   String?
+  is_active   Boolean  @default(true)
+  created_at  DateTime @default(now())
+
+  bookings ParlorBooking[]
+}
+
+model ParlorBooking {
+  id         String   @id @default(cuid())
+  parlor_id  String
+  parlor     Parlor   @relation(fields: [parlor_id], references: [id])
+  user_id    String
+  user       User     @relation(fields: [user_id], references: [id])
+  date       DateTime
+  start_time String
+  end_time   String
+  duration   Int
+  status     String   @default("confirmed")
+  created_at DateTime @default(now())
+
+  @@index([parlor_id, date, start_time])
+}
+
+model Payment {
+  id                  String   @id @default(cuid())
+  user_id             String
+  user                User     @relation(fields: [user_id], references: [id])
+  stripe_session_id   String?  @unique
+  stripe_payment_intent String?
+  amount_cents        Int
+  currency            String   @default("usd")
+  status              String   @default("pending")
+  membership_tier     String
+  paid_at             DateTime?
+  expires_at          DateTime?
+  created_at          DateTime @default(now())
+}
+
+model AuditLog {
+  id          String   @id @default(cuid())
+  action      String
+  admin_id    String?
+  admin       User?    @relation(fields: [admin_id], references: [id])
+  target_id   String?
+  description String
+  created_at  DateTime @default(now())
+}

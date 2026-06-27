@@ -1,3 +1,5 @@
+import DemoButton from "@/components/DemoButton";
+
 export default function Hero() {
   return (
     <section className="relative min-h-screen flex items-center justify-center px-6 overflow-hidden">
@@ -53,26 +55,25 @@ export default function Hero() {
           discretion and prestige.
         </p>
 
-        {/* Single CTA */}
-        <a
-          href="#waitlist"
-          className="inline-flex items-center gap-2 border border-brass text-brass px-10 py-4 font-satoshi text-sm tracking-[0.2em] uppercase hover:bg-brass hover:text-ink transition-all duration-300"
-        >
-          Apply for Membership
-          <svg
-            className="w-4 h-4"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
+        {/* CTAs */}
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+          <a
+            href="/signup"
+            className="inline-flex items-center gap-2 bg-brass text-ink px-10 py-4 font-satoshi text-sm font-bold tracking-[0.2em] uppercase hover:bg-brass-bright transition-all duration-300"
           >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M19 9l-7 7-7-7"
-            />
-          </svg>
-        </a>
+            Apply for Membership
+          </a>
+          <a
+            href="/login"
+            className="inline-flex items-center gap-2 border border-ivory/25 text-ivory px-10 py-4 font-satoshi text-sm tracking-[0.2em] uppercase hover:border-brass hover:text-brass transition-all duration-300"
+          >
+            Member Login
+          </a>
+          <DemoButton />
+        </div>
+        <p className="mt-6 font-satoshi text-xs text-ivory/40">
+          Demo account ready — one click into the salon.
+        </p>
       </div>
     </section>
   );

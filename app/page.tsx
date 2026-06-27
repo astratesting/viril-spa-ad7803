@@ -1,17 +1,1 @@
-import Hero from "@/components/Hero";
-import Vision from "@/components/Vision";
-import WaitlistForm from "@/components/WaitlistForm";
-import FAQ from "@/components/FAQ";
-import Footer from "@/components/Footer";
-
-export default function Home() {
-  return (
-    <main className="min-h-screen bg-ink">
-      <Hero />
-      <Vision />
-      <WaitlistForm />
-      <FAQ />
-      <Footer />
-    </main>
-  );
-}
+[{'next': 'export const metadata: Metadata = {\n  title:', 'SOON': 'description:', 'Hollywood.': ''}, {'overflow-hidden': {'opacity-5': 'tyle={{\n            backgroundImage: `\n              radial-gradient(circle at 10% 20%', 'backgroundSize': '100px 100px, 150px 150px, 120px 120px, 180px 180px', 'backgroundRepeat': 'no-repeat'}}, {'background': 'radial-gradient(ellipse at 30% 20%, rgba(255,90,0,0.05) 0%, transparent 55%), radial-gradient(ellipse at 75% 85%, rgba(230,0,122,0.05) 0%, transparent 60%)'}, {'uppercase': 'Coming Soon\n            </span>\n          </div>\n\n          {/* Brand wordmark */'}, {'className=': 'rid grid-cols-1 md:grid-cols-3 gap-8', 'mb-8': {'className=': 'bsolute right-2 top-1/2 -translate-y-1/2 bg-[#0C0C0D] border border-[#39FF14]/30 text-[#39FF14] font-satoshi text-sm tracking-[0.2em] uppercase hover:bg-[#39FF14]/10 transition-colors cursor-not-allowed px-4 py-2', 'mt-3': 'Join our exclusive waitlist for early access\n            </p>\n          </div>\n        </div>\n      </div>\n\n      {/* Vision Section */'}, 'title': 'A Private Sanctuary', 'description': 'Discretion and luxury in the heart of WeHo', 'icon': '◈'}, {'title': 'Curated Belonging', 'description': 'An authentic aristocratic social salon for HNW LGBTQ+ individuals', 'icon': '◆'}, {'title': 'Old-World Prestige', 'description': '1920s Parisian salon heritage reimagined for today', 'icon': '✦'}, {'className=': 'g-black/30 border border-white/10 p-6 backdrop-blur-sm hover:border-[#E6007A]/30 transition-all duration-300', 'mb-3': {'leading-relaxed': {'uppercase': 'West Hollywood · Est. 2026\n          </p>\n        </div>\n      </footer>\n    </main>\n  );'}}}]

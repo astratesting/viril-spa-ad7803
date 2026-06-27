@@ -1,403 +1,476 @@
-# Goon MVP Build Plan
+# Goon App Build Plan
 
 ## 1. PRODUCT
 
-Goon is a fully-functional private members club platform where verified HNW LGBTQ+ individuals sign up via email+password, complete a membership profile, browse a directory of other verified members, RSVP to exclusive events, and pay for annual membership tiers ($1,200–$3,500/yr) via Stripe. The core value is discretion-first access to an aristocratic queer community — no public names, no social proof, no fabricated community stats. It solves the research-identified pain that Soho House, San Vicente Bungalows, and The Battery fail to provide: identity-verified LGBTQ+ belonging with old-world salon culture, zero discomfort in wellness/spa contexts (53% of gay men have left a spa due to discomfort), and private dining/events that are explicitly queer-safe.
+Goon is an invite-only digital clubhouse and membership management platform for high-net-worth LGBTQ+ individuals. It provides secure member profiles, event RSVP with Stripe payment integration, private member directory with connection requests, and a discretion-first community forum — all wrapped in an old-world aristocratic salon aesthetic. The core value is a trusted digital counterpart to a physical private club where members can manage their membership, discover and book member-only events, and connect with vetted peers without sacrificing privacy. The primary pain solved: HNW LGBTQ+ individuals lack a digital platform that combines the exclusivity of San Vicente Bungalows with the warmth of 1920s Parisian salon culture, without the data-mining and low-trust patterns of mainstream social apps.
 
 ## 2. WHO IT'S FOR
 
-HNW gay and lesbian professionals aged 30–55 in West Hollywood/Beverly Hills metro, earning $100k+/year, who spend $5k–25k/yr on luxury travel, wellness, dining, fashion, and grooming. They are time-poor ops managers and executives who want one tap to access their club — they will abandon a product with nested menus or slow onboarding. They value discretion over visibility: their dashboard shows one primary CTA ("Your Club"), not a feed of strangers. They are 2–3x more likely than straight peers to take luxury international trips, so mobile-first access to directory and events is critical. Research shows 68% prefer brands with authentic queer representation but zero fake social proof — hence all member profiles are real-verified or hidden behind pending status.
+ICP: High-net-worth LGBTQ+ individuals aged 30-65, concentrated in West Hollywood/Beverly Hills, with $500k+ annual household income. Time-poor professionals who value discretion, old-world privacy, and authentic queer community. They spend $5k-25k+/year on luxury fashion, $200B+ globally on luxury travel, and will pay 20%+ premium for LGBTQ+-congruent services. They have left services due to discomfort (53% of gay men from spas). This shapes the product: no public profiles, no social feed noise, no data exploitation. The tone is warm but formal — like a handwritten invitation from a trusted friend. The dashboard opens on a single Today view with one primary CTA ("View Events"); no nested menus for core actions. Copy uses "Member" not "User", "Salon" not "Forum", "Invitation" not "Request".
 
 ## 3. LOOK & FEEL
 
-### Overall Vibe
-Old European aristocratic luxury club — think 1920s Parisian salon meets modern digital discretion. Every pixel says "you belong here, and no one else knows." No gradients, no shadows, no rounded corners except minimal. Everything is flat, typographic, and made of light and space.
+### Visual System
 
-### Color Palette
-```
---charcoal: #1C1C1E       (bg-primary, text-primary)
---brass: #C5A55A          (accents, CTAs, dividers)
---ivory: #F5F0EB          (bg-secondary, card-bg)
---brass-light: #D4BF7A    (hover, subtle highlights)
---ivory-dark: #E8E0D8     (border, disabled)
---red: #8B3A3A            (errors, destructive actions — use sparingly)
---white: #FFFFFF          (text on charcoal, card bg on dark)
-```
+**Vibe:** Old-world aristocratic salon meets modern queer luxury. Dark, warm, intimate. Think: wood-paneled library, candlelight, velvet, gilded frames. Digital equivalent: deep gradients, subtle textures, generous whitespace.
 
-### Typography
-- **Headings:** Playfair Display, 700 weight, tracking 0.02em
-- **Body:** Satoshi, 400/500 weight, 16px base, line-height 1.6
-- **Small:** Satoshi, 400, 12–14px, uppercase where appropriate
-- **Monospace:** JetBrains Mono for verification codes (if applicable)
+**Color Palette (from globals.css):**
+- Background: `#1a1a1a` (near-black), `#2a2a2a` (card bg)
+- Text: `#f5f5f0` (warm white), `#a0a090` (muted text)
+- Accent Flame: `#ff6b35` (primary actions, CTAs)
+- Accent Magenta: `#e91e63` (secondary, highlights)
+- Accent Green: `#00e676` (success, online status)
+- Border: `#3a3a3a` (subtle divider)
 
-### Spacing & Layout
-- 8px grid system (spacing: 4, 8, 16, 24, 32, 48, 64, 96)
-- Max content width: 1280px, centered with padding
-- White space is a feature — never crowd elements
-- Cards have 24px padding, 1px solid `ivory-dark` border (no shadow)
+**Typography:**
+- Headings: `font-heading` (Satoshi, sans-serif), large tracking on display text
+- Body: `font-sans` (Satoshi regular), 16px base, 1.6 line-height
+- Accent: `font-mono` (JetBrains Mono, for dates/prices)
 
-### Key Components
-- **Buttons:** Flat, uppercase, Satoshi 14px/700. Primary = brass bg + white text. Secondary = transparent + brass border + brass text. Ghost = transparent + ivory text. Danger = red bg + white text. All have 2px border, 8px padding horizontal, 12px vertical, 32px height.
-- **Inputs:** Ivory bg, 1px ivory-dark border, 12px padding, 16px font, focus: brass border 2px. Label above input in small uppercase Satoshi.
-- **Cards:** Ivory bg, 1px ivory-dark border, 24px padding. No shadow ever.
-- **Dividers:** 1px solid ivory-dark, 48px margin vertical.
-- **Navigation:** Top bar with logo left, member name right (never member count/avatars). Side nav on dashboard with icon + text (icons: 20x20, brass).
+**Spacing/Layout:**
+- 12-column grid, max-width 1200px
+- Section padding: `py-16 lg:py-24`
+- Card padding: `p-6 lg:p-8`
+- Border radius: `rounded-xl` (12px) for cards, `rounded-lg` (8px) for buttons
 
-### Iconography
-Simple line icons, 1.5px stroke, rounded caps, brass color. Use Lucide icons (already in Next.js). Core set: User (profile), Users (directory), Calendar (events), CreditCard (payments), Settings, Shield (verification), LogOut.
+**Key Components:**
+- `Card` - dark bg, subtle border, hover lift with `shadow-lg`
+- `Button` - flame orange primary (`bg-accent hover:bg-accent/90`), outline secondary with border-accent
+- `Input` - dark input with border, focus:ring-accent
+- `Avatar` - circular, with online indicator (green dot)
+- `Badge` - for membership tier display
+- `Modal` - overlay with backdrop blur, for RSVP/connection actions
+- `Toast` - for success/error feedback
 
-### Imagery
-No photos of people. Only abstract textures (marble, linen, wood grain) used as subtle backgrounds on hero sections. Images are decorative, never aspirational. Use CSS gradients from charcoal to dark brass for header backgrounds.
+**Iconography:**
+- Lucide icons, consistent 20px stroke width
+- Custom icons for: Membership tiers (crown, star, diamond), Events (calendar), Directory (users), Settings (gear)
 
-### Interaction & Motion
-- Hover: buttons shift 1px down, border goes brass-light. Links underline from left.
-- Focus: outline 2px brass with 4px offset.
-- Transitions: 200ms ease-out on all interactive elements.
-- Page transitions: fade (300ms opacity) — no slide, no spring.
-- Loading: brass spinner (16x16, border 2px, transparent center) centered in CTA area.
-- Errors: shake 150ms (CSS keyframe) on invalid inputs.
+**Imagery:**
+- No stock photography. Use abstract gradients, geometric patterns, subtle textures (noise overlay on bg)
+- Member profile: avatar upload only
+- Event: venue photo upload by admin
 
-### Screen-by-Screen Layout
+**Interaction/Motion:**
+- Page transitions: fade in 300ms
+- Hover: subtle scale (1.02) on cards, color shift on buttons
+- Modal: slide up 200ms, backdrop blur
+- Toast: slide in from right, auto-dismiss 4s
+- No parallax, no heavy animations — performance matters
 
-**Landing Page (existing, enhance)**
-- Hero: full-viewport, charcoal bg, "Goon" in Playfair 96px, ivory, centered. Subtitle: "Private Membership for the Discerning." Brass divider line. Below: two CTAs side by side: "Apply for Membership" (primary) and "Member Login" (ghost).
-- Below fold: four discrete sections (no images of people): "Club Values" with three value cards (text only), "Membership Tiers" with three tier cards showing price + bullet list of benefits, "The Space" with address + map placeholder, "Apply" section with inline waitlist form (name, email, password, role selector).
-- Footer: copyright, privacy, terms — all real routes.
+### Screen Layouts
 
-**Auth Pages (Login / Signup)**
-- Full-screen centered card (max 440px) on charcoal bg. Logo top center (SVG text "Goon" in Playfair). Email input, password input with show/hide toggle. Submit button primary. Link to other auth page below. Error messages inline red below inputs. No social buttons.
-- Login: "Member Login" heading. "Forgot password?" link (sends magic link via Supabase). 
-- Signup: "Apply for Membership" heading. Name, email, password, confirm password. Success redirects to profile onboarding.
+**Dashboard (`/dashboard`):**
+- Top: App bar with Goon logo (left), search icon (right, expands on click)
+- Below: Greeting "Good evening, [Name]" with date
+- Main: Single column, two sections:
+  1. "Your Next Event" card: event image (placeholder gradient), title, date/time, location, RSVP button (if not yet RSVP'd), "View Details" link
+  2. "Recent Activity" feed: 3-4 items from forum/connections (minimal, no scroll)
+- Bottom: Tab bar (mobile) or sidebar (desktop): Dashboard, Events, Directory, Salon (Forum), Profile, Settings
 
-**Dashboard (after auth)**
-- Top nav: "Goon" logo left, member name right (dropdown: Profile, Account Settings, Sign Out).
-- Left sidebar (260px): brass border right. Items: Home (shield icon), Profile, Directory, Events, Payments, Admin (only if role=admin). Active item: brass text + left brass border 2px.
-- Main content: 3-column grid on desktop, single column mobile. Top: greeting "Welcome, [FirstName]" in Playfair 32px. Below: quick stats cards (2 across) — "Your Membership: [Basic/Premium/VIP]" and "Upcoming Events: [count]". Below: recent directory matches (3 member cards, minimal). Below: next event with RSVP button.
+**Events Page (`/events`):**
+- Top: "Upcoming Events" heading + filter pills (All, This Week, This Month)
+- Grid: 2 columns desktop, 1 mobile. Each card: event image placeholder, title, date, time, location, RSVP count, RSVP button
+- Detail page (click card): full event info with Stripe payment embed if paid
 
-**Profile Page**
-- Left: member photo upload (circle, 120px, gray placeholder with camera icon). Input fields vertical: First Name, Last Name, Email (disabled), Phone, Occupation, Industry (dropdown: Tech, Finance, Law, Entertainment, Fashion, Wellness, Other). Bio (textarea, 3 rows). Pronouns (text). Languages (comma-separated).
-- Right column: Verification status badge ("Verified" in green or "Pending" in amber). Membership tier with price. Join date. Last active date.
-- Action buttons: Save Changes (primary), Cancel (ghost), Delete Account (danger, bottom).
+**Directory (`/directory`):**
+- Top: Search bar + filter by membership tier
+- Grid: 3 columns desktop, 2 tablet, 1 mobile. Each card: avatar, first name + last initial, membership tier badge, "Connect" button
+- No full names, no contact info until connection accepted
 
-**Member Directory**
-- Search bar top: text input with magnifier icon. Filters below as inline tags: Industry (multi-select dropdown), Membership Tier (checkboxes), Location (text). 
-- Results: grid of member cards (3 columns desktop, 2 tablet, 1 mobile). Each card: avatar (48px circle), first name + last initial (never full last name), occupation, industry, membership tier badge. Click opens profile (read-only).
-- Profile detail: same fields as own profile but read-only. "Connect" button (placeholder — sends connection request, future feature). "Report" link bottom (admin notification).
+**Salon (`/salon`):**
+- Top: "The Salon" heading + "New Post" button
+- List: Thread cards with title, author (first name + last initial), reply count, last activity timestamp
 
-**Events Page**
-- Top: "Create Event" button (admin only). "Upcoming Events" / "Past Events" tabs.
-- Event cards in vertical list. Each card: event name (Playfair 24px), date/time, location address, description (1 line, truncated), RSVP status ("Going" / "Not Going" / "Full"), member count badge.
-- Event detail page: full description, large location text, RSVP button (toggles between "RSVP" and "Cancel RSVP"). Attendee count (number only, no names).
-- Create Event form (admin): name, date/time, location, description (textarea), capacity (number), RSVP deadline (datetime). Submit creates row in events table.
-
-**Payments Page**
-- Membership tiers display: three cards showing Basic ($1,200/yr), Premium ($2,200/yr), VIP ($3,500/yr). Current tier highlighted with brass border. 
-- "Upgrade" / "Downgrade" buttons (if current tier ≠ selected). "Cancel Membership" link bottom.
-- Payment history table: date, tier, amount, status (paid/refunded/cancelled), receipt link.
-- Checkout flow: click "Upgrade" → redirects to Stripe Checkout session → success redirects back to dashboard with updated tier.
-
-**Admin Dashboard**
-- Only accessible if user.role = 'admin'. Redirect to /dashboard if not admin.
-- Top: "Admin" in Playfair. Stats row: Total Members, Pending Verifications, Total Revenue (sum of active memberships), Upcoming Events count. Each stat in a card with number (48px Playfair brass) and label below.
-- Tabs: "Members" (table: first name, last initial, email, tier, status, join date, actions[verify, suspend, delete]), "Events" (table: name, date, attendees, actions), "Revenue" (table: date, member, tier, amount, status).
-- Each table has inline actions (icons: checkmark for verify, eye for view, trash for delete with confirm modal).
-- Search all tables by name/email.
+**Profile (`/profile`):**
+- Top: Avatar + name + membership tier + member since
+- Sections: Bio (optional), Tags (interests), Connected Members count, Settings gear
 
 ## 4. USER FLOWS
 
-### Flow 1: Signup → Onboarding → Dashboard
-1. `/signup` — user enters name, email, password. Submit.
-2. Supabase Auth creates user with email+password. Auto-login.
-3. Redirect to `/onboarding` (profile creation). User fills: phone, occupation, industry, bio, pronouns, languages. "Save & Continue" button.
-4. POST to `/api/profile` creates row in `profiles` table. Sets `status = 'pending'`.
-5. Redirect to `/dashboard`. Toast: "Welcome! Your profile is pending verification."
+### Flow 1: Sign Up (Invite Only)
+1. User receives invitation link with token
+2. Lands on `/invite/[token]` - shows club branding + "You've been invited"
+3. Enters email, creates password (show password requirements)
+4. Clicks "Accept Invitation"
+5. Supabase Auth creates user, token validated
+6. Redirect to `/onboarding`
 
-### Flow 2: Login → Dashboard
-1. `/login` — user enters email, password. Submit.
-2. Supabase Auth validates. Redirect to `/dashboard`.
-3. If no profile exists, redirect to `/onboarding` first.
+### Flow 2: Onboarding
+1. `/onboarding` step 1: Upload avatar + set display name (first name + last initial)
+2. Step 2: Select interests/tags (Art, Travel, Wine, etc.)
+3. Step 3: Review membership tier (from invitation)
+4. Step 4: Enter payment info (Stripe) if paid tier
+5. Complete → redirect to `/dashboard`
 
-### Flow 3: Browse Directory → View Member Profile
-1. Click "Directory" in sidebar → `/directory`.
-2. See member cards. Type in search or select filter.
-3. Click card → `/directory/[id]` — read-only profile.
-4. "Connect" button shows toast: "Connection requests coming soon."
+### Flow 3: RSVP to Event
+1. From dashboard or events page, click event card
+2. `/events/[id]` shows event details
+3. Click "RSVP" button
+4. If paid: Stripe payment sheet opens in modal
+5. On success: toast "You're in! See you there" + RSVP count updates
+6. Event appears in "Your Events" on dashboard
 
-### Flow 4: Event RSVP
-1. Click "Events" in sidebar → `/events`.
-2. Click event card → `/events/[id]`.
-3. Click "RSVP" button → POST to `/api/events/[id]/rsvp` with action='rsvp'.
-4. Button changes to "Cancel RSVP". Attendee count increments.
+### Flow 4: Connect with Member
+1. Directory page, click "Connect" on member card
+2. Modal: "Send connection request to [Name]?"
+3. Click "Send Request"
+4. Recipient gets notification (in-app + email)
+5. Recipient can Accept/Decline from their "Requests" tab on directory
+6. On accept: both appear in each other's connections list
 
-### Flow 5: Payment Upgrade
-1. Click "Payments" in sidebar → `/payments`.
-2. See current tier highlighted. Click "Upgrade" on different tier.
-3. GET `/api/stripe/checkout?tier=premium` → creates Stripe Checkout Session.
-4. Redirect to Stripe Checkout URL. User enters card details.
-5. On success, Stripe webhook (`/api/stripe/webhook`) updates membership in DB.
-6. Redirect back to `/payments?success=true`. Toast: "Membership upgraded!"
+### Flow 5: Create Forum Post
+1. Salon page, click "New Post"
+2. Modal: title input + rich text body
+3. Optional: add tags
+4. Click "Post to Salon"
+5. Post appears in thread list, timestamp "just now"
 
-### Flow 6: Admin Verify Member
-1. Login as admin → `/admin` → Members tab.
-2. Find row with status "pending". Click verify icon.
-3. PUT `/api/admin/members/[id]/verify` — updates profile.status to 'verified'.
-4. Row updates to "verified" in green. Toast: "Member verified."
+### States
+- **Loading:** Skeleton screens (gray animated cards)
+- **Empty:** "Nothing here yet" with illustration + CTA
+- **Error:** "Something went wrong" with retry button
+- **Offline:** Banner "You're offline. Some features may not work."
 
-## 5. PAGES & ROUTES
+## 5. PAGES/ROUTES
 
-| Route | Purpose | Layout | Main UI Elements |
-|-------|---------|--------|------------------|
-| `/` | Landing page | Public hero + sections | Hero, tier cards, waitlist form, footer |
-| `/login` | Login form | Centered card | Email input, password with toggle, submit, forgot link |
-| `/signup` | Signup form | Centered card | Name, email, password, confirm, submit |
-| `/forgot-password` | Password reset | Centered card | Email input, submit, success message |
-| `/dashboard` | Main dashboard | Sidebar + content | Greeting, stats cards, directory preview, next event |
-| `/onboarding` | Profile setup | Full width form | Avatar upload, text inputs, dropdowns, textareas, save |
-| `/profile` | Edit own profile | Sidebar layout | Photo, fields, verification badge, save/delete |
-| `/directory` | Member browse | Sidebar layout | Search, filters, card grid |
-| `/directory/[id]` | Member detail | Sidebar layout | Read-only profile, connect button, report link |
-| `/events` | Event list | Sidebar layout | Tabs (upcoming/past), event cards, create button (admin) |
-| `/events/create` | Create event (admin) | Sidebar layout | Form: name, date/time, location, description, capacity, deadline |
-| `/events/[id]` | Event detail | Sidebar layout | Description, address, RSVP button, attendee count |
-| `/payments` | Payment management | Sidebar layout | Tier cards, current tier highlight, upgrade/downgrade, history table |
-| `/admin` | Admin dashboard | Sidebar layout | Stats cards, tabs, tables with inline actions |
+| Route | Purpose | Layout | UI Elements |
+|-------|---------|--------|-------------|
+| `/` | Landing (existing) | Full-width hero, features, tiers, waitlist | Hero, cards, waitlist form |
+| `/invite/[token]` | Accept invitation | Centered card, branding | Form, validation |
+| `/onboarding` | New member setup | Step wizard | Avatar upload, tags, payment |
+| `/dashboard` | Member home | App shell + main content | Greeting, event card, activity |
+| `/events` | Event listing | Grid with filter | Event cards, filter pills |
+| `/events/[id]` | Event detail | Centered card | Image, details, RSVP, payment |
+| `/directory` | Member finder | Search + grid | Search, member cards, connect |
+| `/salon` | Forum threads | List | Thread cards, new post |
+| `/salon/[id]` | Thread detail | Container | Posts, reply form |
+| `/profile` | Own profile | Centered card | Avatar, info, settings |
+| `/profile/[id]` | Member profile (connection only) | Centered card | Limited info |
+| `/settings` | Account settings | Form | Email, password, notifications |
+| `/admin` | Club admin (tier: club_admin) | Dashboard | Members, events, invitations management |
 
 ## 6. CORE FEATURES
 
-### Auth (Supabase Auth with email+password)
-- **Signup:** `supabase.auth.signUp()` with email+password. Auto-confirm (no email verification for MVP — add later if needed). Create profile row on auth trigger.
-- **Login:** `supabase.auth.signInWithPassword()`. Error handling for invalid credentials, disabled accounts.
-- **Logout:** `supabase.auth.signOut()`. Redirect to `/`.
-- **Forgot Password:** `supabase.auth.resetPasswordForEmail()` — sends magic link.
-- **Session:** `@supabase/ssr` cookie-based session. Middleware in `middleware.ts` protects dashboard routes, redirects to `/login` if no session.
-- **Role:** JWT includes app_metadata.role ('member' or 'admin'). Default 'member'. Admin set via DB trigger or manual.
+### 6.1 Invite-Only Signup
+- Generate unique token on member creation
+- Token stored in `invitations` table with expiry (7 days)
+- `/invite/[token]` validates token, shows member name + tier
+- On accept: token marked used, auth user created, member record created
+- No public signup page exists
 
-### Profile Management
-- **Fields:** id (uuid, FK to auth.users), first_name, last_name, email, phone, occupation, industry, bio, pronouns, languages (text array), avatar_url, status (enum: pending/verified/suspended), membership_tier (enum: basic/premium/vip), join_date, last_active.
-- **CRUD:** User can edit own profile (PUT `/api/profile`). Admin can update status and tier.
-- **Verification:** When status='pending', member is invisible in directory. Admin must manually verify. Verified members are visible with "Verified" badge.
+### 6.2 Membership Tiers
+- Three tiers: Founding ($1,200/yr), Premium ($2,200/yr), VIP ($3,500/yr)
+- Stored in `membership_tiers` table with price, features (JSON), max_connections
+- Member has tier_id + renewal_date
+- Stripe subscription per tier (monthly/annual options)
+- Tier badge shown on profile + directory
 
-### Member Directory
-- **Search:** SQL `ilike` query on first_name, last_name, occupation, industry. Returns subset if name matches query.
-- **Filters:** Industry (multi-select checkboxes), Membership Tier (checkboxes). Applied via URL search params (`?industry=tech&tier=vip`).
-- **Privacy:** Only first name + last initial shown in list. Full last name hidden. Profiles show same limited info. No company names.
-- **Pagination:** 12 per page, "Load More" button at bottom (no automatic infinite scroll — respects user's time).
+### 6.3 Event RSVP with Payments
+- Admin creates events in admin panel (or via seed)
+- Members view events, see RSVP count (not who)
+- RSVP button: if free, instant; if paid, Stripe payment sheet
+- On success: insert into `event_rsvps` with payment status
+- Event card shows "X members attending"
+- Check-in: admin can mark attended via admin panel
 
-### Events & RSVP
-- **Events table:** id, name, description, location, date_time, capacity, rsvp_deadline, created_by (FK to profiles).
-- **RSVPs table:** id, event_id (FK), user_id (FK), created_at, status (going/not_going).
-- **RSVP logic:** If count of 'going' RSVPs >= capacity, show "Full" badge. If deadline passed, disable RSVP. Admin can edit/delete any event.
-- **Event visibility:** All verified members see all events. No public events page.
+### 6.4 Private Member Directory
+- Search members by name, filter by tier
+- Each member card shows: first name + last initial, avatar, tier badge
+- "Connect" button (not "Follow" or "Add Friend")
+- Connection system: request → accept → both connected
+- No full names, no contact info, no public profiles
+- Profile only visible to connections
 
-### Payments via Stripe
-- **Tiers:** Fixed prices stored as environment variables. Each tier mapped to a Stripe Price ID.
-- **Checkout:** GET `/api/stripe/checkout?tier={slug}` creates Stripe Checkout Session with success_url and cancel_url.
-- **Webhook:** POST `/api/stripe/webhook` listens for `checkout.session.completed`. Updates user's `membership_tier` in profiles table. Also creates row in `payments` table: id, user_id, tier, amount, stripe_session_id, status, created_at.
-- **Receipts:** Stripe handles email receipts. Payment history table shows date, tier, amount, status with link to Stripe customer portal.
-- **Refunds:** Admin can trigger refund via Stripe dashboard (no UI needed for MVP). Payment row status updates via webhook.
+### 6.5 Salon (Private Forum)
+- Thread-based, no public visibility
+- Create post: title + body (rich text)
+- Reply to threads
+- Tags for filtering (Art, Travel, Current Affairs)
+- Only members can view or post
+- No likes, only replies (keeps it conversational, not performative)
 
-### Admin Dashboard
-- **Stats:** SQL queries: `SELECT COUNT(*) FROM profiles WHERE status = 'verified'` for member count; `SELECT COUNT(*) FROM profiles WHERE status = 'pending'` for pending; `SELECT SUM(amount) FROM payments WHERE status = 'paid'` for revenue.
-- **Member Management:** Table with pagination. Actions: verify (sets status='verified'), suspend (status='suspended'), delete (cascade deletes auth user + all data — admin only, with confirm modal).
-- **Event Management:** Same as member table. Actions: delete event (with RSVPs cascade deleted), edit (opens event form pre-filled).
-- **Payment Table:** Read-only table from payments table. No direct actions — admin uses Stripe dashboard for refunds.
+### 6.6 PII Encryption
+- Fields: email, full name, phone, address
+- Encrypted at rest using Supabase Vault or pgcrypto
+- Only member can decrypt their own PII
+- Admin sees masked: j***@example.com
+
+### 6.7 Audit Trail
+- `audit_log` table: actor_id, action, target_id, timestamp
+- Actions: login, invite_accepted, rsvp_created, connection_requested, profile_updated
+- Read-only for admin, immutable
+
+### 6.8 RLS (Row Level Security)
+- Members table: user can read own; admin reads all; basic info visible to connected members
+- Events: all members can read; admin write
+- Event RSVPs: member sees own; admin sees all
+- Salon posts: all members can read/write
+- Connections: involved members only
+- Invitations: admin only
+
+### 6.9 Stripe Integration
+- Webhook handlers for: checkout.session.completed, subscription.updated
+- On checkout complete: update member tier + renewal_date
+- On subscription failed: send warning email, downgrade after grace period
+- Payment method management in settings
 
 ## 7. DATA MODEL
 
+### Tables (in `supabase/migrations/`)
+
 ```sql
--- auth.users (handled by Supabase Auth)
-
-CREATE TYPE member_status AS ENUM ('pending', 'verified', 'suspended');
-CREATE TYPE membership_tier AS ENUM ('basic', 'premium', 'vip');
-
-CREATE TABLE profiles (
-  id UUID PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE,
+-- members
+CREATE TABLE members (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  auth_user_id UUID REFERENCES auth.users UNIQUE,
+  email TEXT UNIQUE NOT NULL,
+  display_name TEXT NOT NULL,
   first_name TEXT NOT NULL,
-  last_name TEXT NOT NULL,
-  email TEXT NOT NULL UNIQUE,
-  phone TEXT,
-  occupation TEXT,
-  industry TEXT,
-  bio TEXT,
-  pronouns TEXT,
-  languages TEXT[] DEFAULT '{}',
+  last_initial TEXT NOT NULL,
   avatar_url TEXT,
-  status member_status DEFAULT 'pending',
-  membership_tier membership_tier DEFAULT NULL,
-  join_date TIMESTAMPTZ DEFAULT NOW(),
-  last_active TIMESTAMPTZ DEFAULT NOW(),
-  created_at TIMESTAMPTZ DEFAULT NOW(),
-  updated_at TIMESTAMPTZ DEFAULT NOW()
+  tier_id UUID REFERENCES membership_tiers(id),
+  renewal_date TIMESTAMPTZ,
+  tags TEXT[] DEFAULT '{}',
+  bio TEXT,
+  onboarding_complete BOOLEAN DEFAULT false,
+  created_at TIMESTAMPTZ DEFAULT now(),
+  updated_at TIMESTAMPTZ DEFAULT now()
 );
 
-CREATE TABLE events (
+-- membership_tiers
+CREATE TABLE membership_tiers (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   name TEXT NOT NULL,
+  price_cents INTEGER NOT NULL,
+  interval TEXT DEFAULT 'year',
+  features JSONB DEFAULT '[]',
+  max_connections INTEGER DEFAULT 50,
+  created_at TIMESTAMPTZ DEFAULT now()
+);
+
+-- invitations
+CREATE TABLE invitations (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  token TEXT UNIQUE NOT NULL,
+  email TEXT NOT NULL,
+  tier_id UUID REFERENCES membership_tiers(id),
+  invited_by UUID REFERENCES members(id),
+  used BOOLEAN DEFAULT false,
+  expires_at TIMESTAMPTZ NOT NULL,
+  created_at TIMESTAMPTZ DEFAULT now()
+);
+
+-- events
+CREATE TABLE events (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  title TEXT NOT NULL,
   description TEXT,
-  location TEXT NOT NULL,
-  date_time TIMESTAMPTZ NOT NULL,
-  capacity INTEGER NOT NULL CHECK (capacity > 0),
-  rsvp_deadline TIMESTAMPTZ NOT NULL,
-  created_by UUID NOT NULL REFERENCES profiles(id),
-  created_at TIMESTAMPTZ DEFAULT NOW(),
-  updated_at TIMESTAMPTZ DEFAULT NOW()
+  venue_name TEXT,
+  venue_address TEXT,
+  start_time TIMESTAMPTZ NOT NULL,
+  end_time TIMESTAMPTZ,
+  price_cents INTEGER,
+  max_attendees INTEGER,
+  image_url TEXT,
+  created_by UUID REFERENCES members(id),
+  created_at TIMESTAMPTZ DEFAULT now()
 );
 
-CREATE TABLE rsvps (
+-- event_rsvps
+CREATE TABLE event_rsvps (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  event_id UUID NOT NULL REFERENCES events(id) ON DELETE CASCADE,
-  user_id UUID NOT NULL REFERENCES profiles(id) ON DELETE CASCADE,
-  status TEXT NOT NULL CHECK (status IN ('going', 'not_going')),
-  created_at TIMESTAMPTZ DEFAULT NOW(),
-  UNIQUE(event_id, user_id)
+  event_id UUID REFERENCES events(id) ON DELETE CASCADE,
+  member_id UUID REFERENCES members(id),
+  status TEXT DEFAULT 'confirmed', -- confirmed, waitlist, cancelled
+  payment_status TEXT, -- paid, free, refunded
+  stripe_session_id TEXT,
+  checked_in BOOLEAN DEFAULT false,
+  created_at TIMESTAMPTZ DEFAULT now(),
+  UNIQUE(event_id, member_id)
 );
 
-CREATE TABLE payments (
+-- connections
+CREATE TABLE connections (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  user_id UUID NOT NULL REFERENCES profiles(id),
-  tier membership_tier NOT NULL,
-  amount INTEGER NOT NULL, -- in cents
-  stripe_session_id TEXT UNIQUE,
-  status TEXT NOT NULL CHECK (status IN ('paid', 'refunded', 'cancelled')),
-  created_at TIMESTAMPTZ DEFAULT NOW()
+  requester_id UUID REFERENCES members(id),
+  recipient_id UUID REFERENCES members(id),
+  status TEXT DEFAULT 'pending', -- pending, accepted, rejected
+  created_at TIMESTAMPTZ DEFAULT now(),
+  updated_at TIMESTAMPTZ DEFAULT now()
 );
 
--- Indices
-CREATE INDEX idx_profiles_status ON profiles(status);
-CREATE INDEX idx_profiles_industry ON profiles(industry);
-CREATE INDEX idx_profiles_membership_tier ON profiles(membership_tier);
-CREATE INDEX idx_events_date_time ON events(date_time);
-CREATE INDEX idx_rsvps_event_id ON rsvps(event_id);
-CREATE INDEX idx_payments_user_id ON payments(user_id);
+-- forum_posts
+CREATE TABLE forum_posts (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  title TEXT NOT NULL,
+  body TEXT NOT NULL,
+  author_id UUID REFERENCES members(id),
+  tags TEXT[] DEFAULT '{}',
+  reply_count INTEGER DEFAULT 0,
+  created_at TIMESTAMPTZ DEFAULT now(),
+  updated_at TIMESTAMPTZ DEFAULT now()
+);
+
+-- forum_comments
+CREATE TABLE forum_comments (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  post_id UUID REFERENCES forum_posts(id) ON DELETE CASCADE,
+  author_id UUID REFERENCES members(id),
+  body TEXT NOT NULL,
+  created_at TIMESTAMPTZ DEFAULT now()
+);
+
+-- waitlist (existing)
+CREATE TABLE waitlist (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  email TEXT UNIQUE NOT NULL,
+  name TEXT,
+  created_at TIMESTAMPTZ DEFAULT now()
+);
+
+-- audit_log
+CREATE TABLE audit_log (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  actor_id UUID REFERENCES members(id),
+  action TEXT NOT NULL,
+  target_id UUID,
+  metadata JSONB DEFAULT '{}',
+  created_at TIMESTAMPTZ DEFAULT now()
+);
 ```
+
+### Relationships
+- Member → Membership Tier (belongs_to)
+- Event → Event RSVP (has_many)
+- Member → Event RSVP (has_many)
+- Forum Post → Forum Comment (has_many)
+- Member → Connection (has_many through connections)
+- Invitation → Member (belongs_to inviter)
 
 ## 8. AUTH
 
-- **Provider:** Supabase Auth with email+password only. No social providers configured.
-- **Client:** `@supabase/ssr` package — creates cookie-based Supabase client for server components and route handlers.
-- **Middleware:** `middleware.ts` at root checks for session cookie on all routes under `/dashboard`, `/profile`, `/directory`, `/events`, `/payments`, `/admin`. If no session, redirect to `/login`.
-- **Signup flow:** 
-  1. `supabase.auth.signUp({ email, password })`
-  2. On success, call `/api/create-profile` with user's metadata (first_name, last_name)
-  3. Profile row created with `status = 'pending'`
-- **Login flow:**
-  1. `supabase.auth.signInWithPassword({ email, password })`
-  2. If user has no profile row (edge case), redirect to `/onboarding`
-- **Role check:** Admin routes check `session.user.app_metadata.role === 'admin'` in server component. If not admin, redirect to `/dashboard`.
-- **Logout:** `supabase.auth.signOut()` clears cookies, redirects to `/`.
-- **No magic link for signup** — only `forgot-password` flow uses magic link.
+### Implementation: Supabase Auth (email+password)
+
+**Setup:**
+- `@supabase/supabase-js` + `@supabase/ssr` for Next.js
+- Supabase project configured with email/password auth
+- Disable public signup (invite-only: create user via admin API)
+
+**Flow:**
+1. Invitation accepted → admin creates user via `supabase.auth.admin.createUser()`
+2. User receives email with "Set your password" link
+3. User sets password, logs in
+4. Session managed via cookies (`@supabase/ssr` middleware)
+
+**Key files:**
+```typescript
+// lib/supabase/client.ts - browser supabase client
+// lib/supabase/server.ts - server supabase client  
+// middleware.ts - refresh session on route changes
+// app/(auth)/login/page.tsx - login form
+// app/(auth)/callback/route.ts - auth callback handler
+```
+
+**Security:**
+- RLS policies on all tables (see section 6.8)
+- Rate limiting on login (Supabase built-in)
+- Session timeout: 7 days
+- No OAuth buttons (per spec, no provisioned credentials)
 
 ## 9. FILES
 
-Below is every file to create or extend in the existing Next.js 15 project. Files in `(new)` are new; others modify existing ones.
-
-```
-src/
-  app/
-    (new) layout.tsx                              // Root layout — wrap with Supabase provider, apply globals.css
-    (new) page.tsx                                // Landing page (enhance existing)
-    (new) globals.css                             // Already exists — keep as-is
-    (new) middleware.ts                           // Auth middleware — protect dashboard routes, check session
-    auth/
-      (new) login/
-        page.tsx                                  // Login form page
-      (new) signup/
-        page.tsx                                  // Signup form page
-      (new) forgot-password/
-        page.tsx                                  // Forgot password form page
-      (new) callback/
-        route.ts                                  // Auth callback route (Supabase redirect handler)
-    dashboard/
-      (new) page.tsx                              // Dashboard main page — stats, previews
-    onboarding/
-      (new) page.tsx                              // Profile setup form after first signup
-    profile/
-      (new) page.tsx                              // Edit own profile
-    directory/
-      (new) page.tsx                              // Member directory with search/filters
-      (new) [id]/
-        page.tsx                                  // Read-only member profile
-    events/
-      (new) page.tsx                              // Event list with tabs
-      (new) create/
-        page.tsx                                  // Event creation form (admin only)
-      (new) [id]/
-        page.tsx                                  // Event detail + RSVP
-    payments/
-      (new) page.tsx                              // Payment management — tiers, history
-    admin/
-      (new) page.tsx                              // Admin dashboard — stats
-    api/
-      (new) auth/
-        (new) create-profile/
-          route.ts                                // POST — create profile row after signup
-      (new) profile/
-        route.ts                                  // PUT — update own profile
-      (new) directory/
-        route.ts                                  // GET — search members, filtered
-      (new) events/
-        (new) route.ts                            // GET all events, POST create event
-        (new) [id]/
-          (new) route.ts                          // GET event detail
-          (new) rsvp/
-            route.ts                              // POST toggle RSVP
-      (new) stripe/
-        (new) checkout/
-          route.ts                                // GET — create Stripe Checkout Session
-        (new) webhook/
-          route.ts                                // POST — Stripe webhook listener
-      (new) admin/
-        (new) members/
-          (new) route.ts                          // GET all members (admin)
-          (new) [id]/
-            (new) verify/
-              route.ts                            // PUT verify member
-            (new) suspend/
-              route.ts                            // PUT suspend member
-            (new) delete/
-              route.ts                            // DELETE member
-
-  components/
-    (new) ui/
-      (new) Button.tsx                            // Reusable button component with variants
-      (new) Input.tsx                             // Reusable input with label, error
-      (new) Card.tsx                              // Reusable card container
-      (new) Spinner.tsx                           // Loading spinner
-      (new) Toast.tsx                             // Toast notification (simple, no library)
-    (new) layout/
-      (new) Sidebar.tsx                           // Left sidebar navigation
-      (new) TopNav.tsx                            // Top navigation bar
-      (new) DashboardLayout.tsx                   // Layout wrapper for authenticated pages
-
-  lib/
-    (new) supabase/
-      (new) client.ts                             // Browser Supabase client (from @supabase/ssr)
-      (new) server.ts                             // Server-side Supabase client
-      (new) middleware.ts                         // Middleware Supabase client
-    (new) stripe.ts                               // Stripe client init
-    (new) types.ts                                // TypeScript types for DB entities
-    (new) utils.ts                                // Helper functions (formatCurrency, etc.)
-
-  hooks/
-    (new) useAuth.ts                              // Auth state hook (session, user, profile)
-    (new) useDirectory.ts                         // Directory search/filter hook
-
-.env.local                                          // Add: NEXT_PUBLIC_SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET
+```json
+[
+  "app/layout.tsx",
+  "app/page.tsx",
+  "app/globals.css",
+  "app/(auth)/login/page.tsx",
+  "app/(auth)/invite/[token]/page.tsx",
+  "app/(auth)/callback/route.ts",
+  "app/(dashboard)/layout.tsx",
+  "app/(dashboard)/dashboard/page.tsx",
+  "app/(dashboard)/events/page.tsx",
+  "app/(dashboard)/events/[id]/page.tsx",
+  "app/(dashboard)/directory/page.tsx",
+  "app/(dashboard)/salon/page.tsx",
+  "app/(dashboard)/salon/[id]/page.tsx",
+  "app/(dashboard)/profile/page.tsx",
+  "app/(dashboard)/profile/[id]/page.tsx",
+  "app/(dashboard)/settings/page.tsx",
+  "app/(dashboard)/onboarding/page.tsx",
+  "app/(dashboard)/admin/page.tsx",
+  "app/(dashboard)/admin/members/page.tsx",
+  "app/(dashboard)/admin/events/page.tsx",
+  "app/api/auth/signup/route.ts",
+  "app/api/auth/invite/route.ts",
+  "app/api/members/route.ts",
+  "app/api/members/[id]/route.ts",
+  "app/api/events/route.ts",
+  "app/api/events/[id]/rsvp/route.ts",
+  "app/api/connections/route.ts",
+  "app/api/connections/[id]/route.ts",
+  "app/api/salon/posts/route.ts",
+  "app/api/salon/posts/[id]/comments/route.ts",
+  "app/api/stripe/webhook/route.ts",
+  "app/api/stripe/create-checkout/route.ts",
+  "lib/supabase/client.ts",
+  "lib/supabase/server.ts",
+  "lib/supabase/middleware.ts",
+  "lib/stripe/client.ts",
+  "lib/stripe/webhooks.ts",
+  "lib/utils/cn.ts",
+  "lib/utils/format.ts",
+  "lib/utils/encryption.ts",
+  "components/ui/Button.tsx",
+  "components/ui/Card.tsx",
+  "components/ui/Input.tsx",
+  "components/ui/Modal.tsx",
+  "components/ui/Badge.tsx",
+  "components/ui/Avatar.tsx",
+  "components/ui/Toast.tsx",
+  "components/ui/Skeleton.tsx",
+  "components/layout/AppShell.tsx",
+  "components/layout/Sidebar.tsx",
+  "components/layout/TopBar.tsx",
+  "components/dashboard/EventCard.tsx",
+  "components/dashboard/ActivityFeed.tsx",
+  "components/events/EventGrid.tsx",
+  "components/events/RSVPModal.tsx",
+  "components/directory/MemberCard.tsx",
+  "components/directory/ConnectModal.tsx",
+  "components/salon/ThreadCard.tsx",
+  "components/salon/NewPostModal.tsx",
+  "components/salon/ReplyForm.tsx",
+  "middleware.ts",
+  "supabase/migrations/001_init.sql",
+  "supabase/migrations/002_seed_tiers.sql",
+  "supabase/seed.sql",
+  "docs/MVP_ROADMAP.md",
+  "next.config.js",
+  "tailwind.config.ts",
+  "tsconfig.json",
+  "package.json",
+  ".env.local.example"
+]
 ```
 
-## 10. ACCEPTANCE CHECKLIST
+## 10. ACCEPTANCE
 
-- [ ] **Auth works entirely with email+password** — signup creates user + profile, login works, logout clears session, forgot-password sends email, middleware protects all `/dashboard/*` and `/admin/*` routes
-- [ ] **Landing page** shows hero with "Apply for Membership" and "Member Login" CTAs, membership tier cards with prices and bullet lists, waitlist/signup form collects name+email+password
-- [ ] **Onboarding** redirects new users to `/onboarding` where they fill profile fields, on save they land on `/dashboard` with welcome toast
-- [ ] **Dashboard** shows greeting with member's first name, quick stats (membership tier, upcoming events count), directory preview (3 member cards), next event with RSVP button
-- [ ] **Profile page** allows editing all fields, shows verification badge, has save/cancel/delete actions
-- [ ] **Member directory** shows only verified members, search filters by name/industry/tier, cards show first name + last initial only, clicking navigates to read-only profile
-- [ ] **Events page** shows upcoming/past tabs, event cards with details, RSVP toggle works (cannot RSVP past deadline or full events), admin can create events via form
-- [ ] **Payments page** shows tier cards (current highlighted), upgrade/downgrade triggers Stripe Checkout, webhook handles success and updates membership tier, payment history table shows all transactions
-- [ ] **Admin dashboard** shows stats (total members, pending verifications, revenue, upcoming events), member management table with verify/suspend/delete actions, event management table with edit/delete, payment table read-only
-- [ ] **Design system** matches spec: charcoal/brass/ivory colors, Playfair+Satoshi fonts, flat buttons with uppercase text, no rounded corners, no shadows, minimal motion
-- [ ] **No fabricated social proof** — no fake testimonials, no member counts, no "join 500+ members", no fake reviews
-- [ ] **All buttons/links/forms wired** to real routes — no dead UI, no placeholder text, no "Coming Soon" buttons
-- [ ] **Stripe integration** works end-to-end: checkout session created, payment processed, webhook received, membership tier updated in DB
-- [ ] **Responsive** — mobile (single column, hamburger menu on sidebar), tablet (2 columns), desktop (3 columns)
+- [ ] Landing page intact, design system preserved (globals.css, tailwind)
+- [ ] Auth: email+password login works via Supabase, no public signup
+- [ ] Invite flow: token generation → email → accept → onboard → dashboard
+- [ ] Dashboard: shows greeting, next event, recent activity
+- [ ] Events: listing, detail, RSVP (free + paid via Stripe)
+- [ ] Directory: search, filter, send/accept connection requests
+- [ ] Salon: create post, reply, thread list
+- [ ] Profile: view own, edit, view connected members
+- [ ] Membership tiers: seeded, displayed, stripe subscription functional
+- [ ] RLS: members see only what they should (own RSVPs, basic member info, etc.)
+- [ ] PII encryption: email/full name encrypted at rest
+- [ ] Audit trail: key actions logged to audit_log
+- [ ] Admin panel: manage members, events, invitations
+- [ ] Stripe webhook: handles checkout + subscription events
+- [ ] Responsive: mobile-first, works on tablet/desktop
+- [ ] Error states: loading skeletons, empty states, error toasts
+- [ ] Deployed to Vercel with env vars configured
