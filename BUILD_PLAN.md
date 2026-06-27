@@ -1,476 +1,384 @@
-# Goon App Build Plan
+# Goon Membership System — Complete Build Plan
 
 ## 1. PRODUCT
 
-Goon is an invite-only digital clubhouse and membership management platform for high-net-worth LGBTQ+ individuals. It provides secure member profiles, event RSVP with Stripe payment integration, private member directory with connection requests, and a discretion-first community forum — all wrapped in an old-world aristocratic salon aesthetic. The core value is a trusted digital counterpart to a physical private club where members can manage their membership, discover and book member-only events, and connect with vetted peers without sacrificing privacy. The primary pain solved: HNW LGBTQ+ individuals lack a digital platform that combines the exclusivity of San Vicente Bungalows with the warmth of 1920s Parisian salon culture, without the data-mining and low-trust patterns of mainstream social apps.
+Goon is a waitlist and membership management system for an exclusive private members club targeting HNW LGBTQ+ individuals in Los Angeles. The system processes pre-launch applications through a branded waitlist form, enables admin review/approval of candidates, and provisions approved members with accounts and tiered access. Core value: a discrete, aristocratic application pipeline that feels exclusive yet welcoming — no public signup, only invite-based account creation after admin approval. Primary user is the club's membership director (admin) who reviews applications and manages member tiers. Specific pain solved: HNW LGBTQ+ professionals ($200K+ income, 30-55) have no venue that provides old-world aristocratic queer belonging in LA — existing clubs (Soho House, San Vicente Bungalows) fail on authentic LGBTQ+ cultural ownership and safety. This system gates membership to ensure only vetted, aligned individuals enter the community.
 
 ## 2. WHO IT'S FOR
 
-ICP: High-net-worth LGBTQ+ individuals aged 30-65, concentrated in West Hollywood/Beverly Hills, with $500k+ annual household income. Time-poor professionals who value discretion, old-world privacy, and authentic queer community. They spend $5k-25k+/year on luxury fashion, $200B+ globally on luxury travel, and will pay 20%+ premium for LGBTQ+-congruent services. They have left services due to discomfort (53% of gay men from spas). This shapes the product: no public profiles, no social feed noise, no data exploitation. The tone is warm but formal — like a handwritten invitation from a trusted friend. The dashboard opens on a single Today view with one primary CTA ("View Events"); no nested menus for core actions. Copy uses "Member" not "User", "Salon" not "Forum", "Invitation" not "Request".
+- **Primary admins**: Club management (1-3 people) who need a single-pane-of-glass view of applications, member status, and audit logs. They are time-poor — dashboard must show key metrics without secondary clicks. No nested menus.
+- **Applicants**: HNW gay/lesbian professionals 30-55, $200K+ income, living in WeHo/Beverly Hills/Hollywood Hills. They expect elegant, frictionless digital experiences. The waitlist form is their first brand touchpoint — must feel luxurious and exclusive, not like a Google Form.
+- **Members**: Pre-launch approved members who receive an invitation email with a signup link. After account creation, they see a "Coming Soon" member dashboard with club updates.
+- **Tone**: Opulent but not ostentatious. "You belong here" — confident, warm, exclusive without being cold. No "Join now" CTAs — use "Apply for Membership" or "Submit Application."
 
 ## 3. LOOK & FEEL
 
 ### Visual System
 
-**Vibe:** Old-world aristocratic salon meets modern queer luxury. Dark, warm, intimate. Think: wood-paneled library, candlelight, velvet, gilded frames. Digital equivalent: deep gradients, subtle textures, generous whitespace.
+**Vibe**: "Aristocratic queer salon" — dark, warm, intimate. Think 1920s Parisian salon meets modern luxury brand. Chrome, velvet, candlelight. High contrast, sparing use of color as accent.
 
-**Color Palette (from globals.css):**
-- Background: `#1a1a1a` (near-black), `#2a2a2a` (card bg)
-- Text: `#f5f5f0` (warm white), `#a0a090` (muted text)
-- Accent Flame: `#ff6b35` (primary actions, CTAs)
-- Accent Magenta: `#e91e63` (secondary, highlights)
-- Accent Green: `#00e676` (success, online status)
-- Border: `#3a3a3a` (subtle divider)
+**Color Palette** (exact from existing globals.css):
+- `bg-black` (#000000) — full screen backgrounds
+- `bg-[#1C1C1E]` — cards, surfaces, form fields
+- `text-white` (#FFFFFF) — primary text
+- `text-[#8E8E93]` — secondary/placeholder text
+- `border-[#3A3A3C]` — subtle dividers, inputs
+- `bg-[#FF3B30]` (flame) — primary CTAs, status indicators, error states, accent icons
+- `text-[#FF9500]` (orange) — warning states, secondary highlights
+- `text-[#34C759]` (green) — approved/success states, confirmations
 
-**Typography:**
-- Headings: `font-heading` (Satoshi, sans-serif), large tracking on display text
-- Body: `font-sans` (Satoshi regular), 16px base, 1.6 line-height
-- Accent: `font-mono` (JetBrains Mono, for dates/prices)
+**Typography**:
+- Display: `font-['Archivo_Black']` — club name, page titles, hero text (ALL CAPS by default)
+- UI: `font-['Satoshi']` — body text, labels, table content, navigation
+- Sizes: h1 = text-5xl (48px), h2 = text-3xl (30px), h3 = text-xl (20px), body = text-sm (14px), small = text-xs (12px)
+- Weights: Satoshi 400 (regular), 500 (medium), 700 (bold). Archivo Black is 900 only.
 
-**Spacing/Layout:**
-- 12-column grid, max-width 1200px
-- Section padding: `py-16 lg:py-24`
-- Card padding: `p-6 lg:p-8`
-- Border radius: `rounded-xl` (12px) for cards, `rounded-lg` (8px) for buttons
+**Spacing/Layout**:
+- Max content width: 7xl (80rem / 1280px) for public pages, 6xl (72rem) for dashboard
+- Vertical rhythm: space-y-6 between sections, space-y-4 between related items
+- Section padding: px-4 sm:px-6 lg:px-8, py-12 sm:py-16 lg:py-24
+- Cards: rounded-2xl with subtle border (border border-[#3A3A3C]/50)
+- Input fields: rounded-xl bg-[#1C1C1E] border border-[#3A3A3C] px-4 py-3 text-white
 
-**Key Components:**
-- `Card` - dark bg, subtle border, hover lift with `shadow-lg`
-- `Button` - flame orange primary (`bg-accent hover:bg-accent/90`), outline secondary with border-accent
-- `Input` - dark input with border, focus:ring-accent
-- `Avatar` - circular, with online indicator (green dot)
-- `Badge` - for membership tier display
-- `Modal` - overlay with backdrop blur, for RSVP/connection actions
-- `Toast` - for success/error feedback
+**Key Components**:
+- `Button` — variants: primary (bg-[#FF3B30] text-black hover:bg-[#FF3B30]/90), secondary (bg-transparent border border-white/20 text-white hover:bg-white/5), ghost (text-[#8E8E93] hover:text-white)
+- `Input` — dark surface, white text, subtle border focus ring [color primary/50]
+- `Select` — styled dropdown matching input theme
+- `Badge` — status indicators: pending = bg-[#FF9500]/20 text-[#FF9500], approved = bg-[#34C759]/20 text-[#34C759], rejected = bg-[#FF3B30]/20 text-[#FF3B30], waitlisted = bg-[#8E8E93]/20 text-[#8E8E93]
+- `Table` — dark with row hover effects, sticky header, sortable column headers
+- `Sidebar` — fixed left, dark surface, active state uses primary color indicator
 
-**Iconography:**
-- Lucide icons, consistent 20px stroke width
-- Custom icons for: Membership tiers (crown, star, diamond), Events (calendar), Directory (users), Settings (gear)
+**Iconography**: Minimal. Use SVG icons (lucide-react) — User, Mail, Check, X, Eye, Filter, LogOut, LayoutDashboard, ClipboardList, Settings, ArrowRight, ChevronDown, Search, Clock
 
-**Imagery:**
-- No stock photography. Use abstract gradients, geometric patterns, subtle textures (noise overlay on bg)
-- Member profile: avatar upload only
-- Event: venue photo upload by admin
+**Imagery**: None needed for admin dashboard. Public waitlist page uses the existing hero from landing page (luxury venue photography). Members page shows a brand-consistent "Coming Soon" illustration (SVG or gradient).
 
-**Interaction/Motion:**
-- Page transitions: fade in 300ms
-- Hover: subtle scale (1.02) on cards, color shift on buttons
-- Modal: slide up 200ms, backdrop blur
-- Toast: slide in from right, auto-dismiss 4s
-- No parallax, no heavy animations — performance matters
+**Interaction/Motion**:
+- Hover transitions: 200ms ease-out on buttons, cards
+- Form submission: spinner replaces button text on submit, disabled state
+- Status changes: subtle pulse animation on approval/rejection
+- Page transitions: instant (no artificial loading)
+- Toast notifications: bottom-right, slide-up, auto-dismiss after 4s
 
 ### Screen Layouts
 
-**Dashboard (`/dashboard`):**
-- Top: App bar with Goon logo (left), search icon (right, expands on click)
-- Below: Greeting "Good evening, [Name]" with date
-- Main: Single column, two sections:
-  1. "Your Next Event" card: event image (placeholder gradient), title, date/time, location, RSVP button (if not yet RSVP'd), "View Details" link
-  2. "Recent Activity" feed: 3-4 items from forum/connections (minimal, no scroll)
-- Bottom: Tab bar (mobile) or sidebar (desktop): Dashboard, Events, Directory, Salon (Forum), Profile, Settings
+**Public Waitlist Form** (`/waitlist`):
+- Full-screen dark background
+- Centered card (max-w-lg) with subtle glow border-top (primary color)
+- Card header: GOON wordmark (Archivo Black, text-3xl, letterspaced), tagline "Apply for Membership"
+- Fields stacked vertically: Email, First Name, Last Name, Phone (optional), Income Range (dropdown), How Did You Hear (dropdown), Message (optional textarea)
+- Submit button: full width, "Submit Application", primary color
+- Footer: "Already a member? Sign in" link to login page
+- Success state replaces form: green checkmark, "Application Received. You'll hear from us within 48 hours."
 
-**Events Page (`/events`):**
-- Top: "Upcoming Events" heading + filter pills (All, This Week, This Month)
-- Grid: 2 columns desktop, 1 mobile. Each card: event image placeholder, title, date, time, location, RSVP count, RSVP button
-- Detail page (click card): full event info with Stripe payment embed if paid
+**Login** (`/login`):
+- Same centered card layout
+- "Welcome Back" heading
+- Email + Password fields
+- "Sign In" primary button
+- Link to signup: "No account? Apply for membership"
+- Error states inline below fields
 
-**Directory (`/directory`):**
-- Top: Search bar + filter by membership tier
-- Grid: 3 columns desktop, 2 tablet, 1 mobile. Each card: avatar, first name + last initial, membership tier badge, "Connect" button
-- No full names, no contact info until connection accepted
+**Signup** (`/signup`):
+- Same layout, but only accessible via invitation link (not public nav)
+- "Create Your Account" heading
+- Email (prefilled from invite), Password, Confirm Password
+- "Create Account" primary button
+- After success: redirect to member dashboard
 
-**Salon (`/salon`):**
-- Top: "The Salon" heading + "New Post" button
-- List: Thread cards with title, author (first name + last initial), reply count, last activity timestamp
+**Admin Dashboard** (`/dashboard`):
+- Sidebar (w-64) fixed left: logo at top, nav items: Dashboard, Waitlist, Members (future), Settings (future)
+- Main content area: padding p-6
+- Top bar: greeting "Good morning, [Name]", member count badge
+- Stats row: 4 cards (Total Applications, Pending, Approved, Rejected) — each with icon, number, label
+- Below stats: Recent Applications table (compact, last 10) with status badges and action buttons
 
-**Profile (`/profile`):**
-- Top: Avatar + name + membership tier + member since
-- Sections: Bio (optional), Tags (interests), Connected Members count, Settings gear
+**Waitlist Admin** (`/dashboard/waitlist`):
+- Full table view with search bar and status filter (All, Pending, Approved, Rejected, Waitlisted)
+- Table columns: Name, Email, Income Range, Status, Submitted (date), Actions
+- Actions: Approve (green), Reject (red), View (eye icon) — opens detail modal/panel
+- Detail panel (slide-in from right): full application data, admin notes textarea, action buttons
+- Pagination: 20 per page
+
+**Member Dashboard** (`/member`):
+- Minimal "Coming Soon" layout
+- Left: "Welcome to Goon" message with member name
+- Center: stylized "Coming Soon — Q1 2026" with club promises animation
+- Right: Member details (tier, member since date)
+- Footer: "Logout" link
 
 ## 4. USER FLOWS
 
-### Flow 1: Sign Up (Invite Only)
-1. User receives invitation link with token
-2. Lands on `/invite/[token]` - shows club branding + "You've been invited"
-3. Enters email, creates password (show password requirements)
-4. Clicks "Accept Invitation"
-5. Supabase Auth creates user, token validated
-6. Redirect to `/onboarding`
+### Flow 1: Prospect Applies
 
-### Flow 2: Onboarding
-1. `/onboarding` step 1: Upload avatar + set display name (first name + last initial)
-2. Step 2: Select interests/tags (Art, Travel, Wine, etc.)
-3. Step 3: Review membership tier (from invitation)
-4. Step 4: Enter payment info (Stripe) if paid tier
-5. Complete → redirect to `/dashboard`
+1. **Entry**: User lands on `/waitlist` from social/link/word-of-mouth
+2. **Fill Form**: Completes all required fields (email, first_name, last_name, income_range, how_did_you_hear)
+3. **Submit**: Clicks "Submit Application" → button shows spinner, fields lock
+4. **Success**: Form replaced with success state → green checkmark, "Application Received. You'll hear from us within 48 hours."
+5. **Email Sent**: System sends confirmation to applicant email via Resend (`sendWaitlistConfirmation`)
+6. **Admin Notified**: System sends notification to admin email (`sendAdminNotification`)
 
-### Flow 3: RSVP to Event
-1. From dashboard or events page, click event card
-2. `/events/[id]` shows event details
-3. Click "RSVP" button
-4. If paid: Stripe payment sheet opens in modal
-5. On success: toast "You're in! See you there" + RSVP count updates
-6. Event appears in "Your Events" on dashboard
+### Flow 2: Admin Reviews Application
 
-### Flow 4: Connect with Member
-1. Directory page, click "Connect" on member card
-2. Modal: "Send connection request to [Name]?"
-3. Click "Send Request"
-4. Recipient gets notification (in-app + email)
-5. Recipient can Accept/Decline from their "Requests" tab on directory
-6. On accept: both appear in each other's connections list
+1. **Login**: Admin navigates to `/login`, enters credentials
+2. **Dashboard**: Redirected to `/dashboard` — sees 4 stats cards, recent applications table
+3. **View All**: Clicks "View All" or navigates to `/dashboard/waitlist`
+4. **Review**: Clicks "View" on an application → slide-in panel shows full details
+5. **Approve**: Clicks "Approve" → confirmation dialog → application status changes to 'approved'
+6. **Audit Logged**: System logs action in audit_log table
+7. **Email Sent**: System sends welcome/approval email to applicant with signup link (`sendApprovalEmail`)
+8. **Member Created**: System creates entry in members table (status: 'pending', tier: 'founding')
+9. **Toast**: Success notification appears in dashboard
 
-### Flow 5: Create Forum Post
-1. Salon page, click "New Post"
-2. Modal: title input + rich text body
-3. Optional: add tags
-4. Click "Post to Salon"
-5. Post appears in thread list, timestamp "just now"
+### Flow 3: Approved Member Signs Up
 
-### States
-- **Loading:** Skeleton screens (gray animated cards)
-- **Empty:** "Nothing here yet" with illustration + CTA
-- **Error:** "Something went wrong" with retry button
-- **Offline:** Banner "You're offline. Some features may not work."
+1. **Email**: Member receives invitation email with "Create Your Account" button linking to `/signup?email=xxx&token=xxx`
+2. **Signup**: Clicks link → prefilled email, sets password
+3. **Submit**: Clicks "Create Account" → Supabase Auth creates user
+4. **Redirect**: Auto-redirects to `/member` dashboard
+5. **Member Dashboard**: Shows "Welcome, [Name] — Coming Soon" with tier and member number
+
+### Flow 4: Auth Session Management
+
+1. **Middleware Check**: On every request to `/dashboard/*` or `/member/*`, middleware checks Supabase session
+2. **Valid Session**: Proceed to requested page
+3. **Expired Session**: Refresh token via middleware → if refresh fails, redirect to `/login`
+4. **No Session**: Redirect to `/login` with `?redirect=original_url`
+5. **Logout**: Click "Logout" → POST to `/api/auth/logout` → clear cookies → redirect to landing page
 
 ## 5. PAGES/ROUTES
 
+### Public Routes (no auth required)
+
 | Route | Purpose | Layout | UI Elements |
 |-------|---------|--------|-------------|
-| `/` | Landing (existing) | Full-width hero, features, tiers, waitlist | Hero, cards, waitlist form |
-| `/invite/[token]` | Accept invitation | Centered card, branding | Form, validation |
-| `/onboarding` | New member setup | Step wizard | Avatar upload, tags, payment |
-| `/dashboard` | Member home | App shell + main content | Greeting, event card, activity |
-| `/events` | Event listing | Grid with filter | Event cards, filter pills |
-| `/events/[id]` | Event detail | Centered card | Image, details, RSVP, payment |
-| `/directory` | Member finder | Search + grid | Search, member cards, connect |
-| `/salon` | Forum threads | List | Thread cards, new post |
-| `/salon/[id]` | Thread detail | Container | Posts, reply form |
-| `/profile` | Own profile | Centered card | Avatar, info, settings |
-| `/profile/[id]` | Member profile (connection only) | Centered card | Limited info |
-| `/settings` | Account settings | Form | Email, password, notifications |
-| `/admin` | Club admin (tier: club_admin) | Dashboard | Members, events, invitations management |
+| `/` | Existing landing page | Full screen hero | Existing components — KEEP AS-IS |
+| `/waitlist` | Application form | Centered card | WaitlistForm component, success state |
+| `/login` | Auth sign-in | Centered card | EmailInput, PasswordInput, SubmitButton |
+| `/signup` | New account creation | Centered card | EmailInput, PasswordInput, ConfirmInput, SubmitButton |
+
+### Protected Routes (auth required)
+
+| Route | Purpose | Layout | UI Elements |
+|-------|---------|--------|-------------|
+| `/dashboard` | Admin main view | Sidebar + content | StatsCard × 4, WaitlistTable (compact) |
+| `/dashboard/waitlist` | Full waitlist management | Sidebar + content | SearchBar, FilterDropdown, WaitlistTable (full), DetailPanel |
+| `/dashboard/members` | Member management (future) | Sidebar + content | Placeholder "Coming Soon" |
+| `/dashboard/settings` | Admin settings (future) | Sidebar + content | Placeholder "Coming Soon" |
+| `/member` | Member portal | Centered content | WelcomeMessage, TierBadge, StatusInfo |
+
+### API Routes
+
+| Route | Method | Purpose | Auth |
+|-------|--------|---------|------|
+| `/api/waitlist` | POST | Submit application | Public |
+| `/api/waitlist` | GET | List all applications | Admin only |
+| `/api/waitlist/[id]` | GET | Get single application | Admin only |
+| `/api/waitlist/[id]` | PATCH | Update status/notes | Admin only |
+| `/api/waitlist/[id]` | DELETE | Remove application | Admin only |
+| `/api/auth/logout` | POST | Clear auth session | Authenticated |
+| `/api/members/me` | GET | Get current member profile | Authenticated |
 
 ## 6. CORE FEATURES
 
-### 6.1 Invite-Only Signup
-- Generate unique token on member creation
-- Token stored in `invitations` table with expiry (7 days)
-- `/invite/[token]` validates token, shows member name + tier
-- On accept: token marked used, auth user created, member record created
-- No public signup page exists
+### Feature 1: Supabase Auth Integration (fully working)
 
-### 6.2 Membership Tiers
-- Three tiers: Founding ($1,200/yr), Premium ($2,200/yr), VIP ($3,500/yr)
-- Stored in `membership_tiers` table with price, features (JSON), max_connections
-- Member has tier_id + renewal_date
-- Stripe subscription per tier (monthly/annual options)
-- Tier badge shown on profile + directory
+**How it works**:
+- `frontend/lib/supabase/client.ts`: Creates browser client using `createBrowserClient` from `@supabase/ssr` with `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+- `frontend/lib/supabase/server.ts`: Creates server client using `createServerClient` from `@supabase/ssr` — reads cookies via `cookies()` from `next/headers`, sets cookie options for secure HTTP-only transmission
+- `frontend/lib/supabase/middleware.ts`: Exports `createClient` function for middleware that uses `next/headers` cookies, refreshes session if expired
+- `frontend/middleware.ts`: Exports `config` with `matcher: ['/dashboard/:path*', '/member/:path*', '/api/dashboard/:path*']`. Checks session on every matched request. If no session = redirect to `/login`. If session exists but no member record = create one from auth metadata
+- `frontend/app/(auth)/login/page.tsx`: Client component with form. On submit → calls `supabase.auth.signInWithPassword({ email, password })` → on success `router.push('/dashboard')` (or redirect param). On error → show inline message
+- `frontend/app/(auth)/signup/page.tsx`: Client component. On submit → calls `supabase.auth.signUp({ email, password, options: { data: { first_name, last_name } } })` → on success → show "Check your email to confirm" message. **Note**: Email confirmation is ON by default in Supabase. If testing locally, disable email confirmation in Supabase dashboard
+- `frontend/app/(auth)/auth/callback/route.ts`: Route handler for OAuth callbacks (future use). Reads `code` from query, exchanges for session via `supabase.auth.exchangeCodeForSession`, redirects to `/dashboard`
 
-### 6.3 Event RSVP with Payments
-- Admin creates events in admin panel (or via seed)
-- Members view events, see RSVP count (not who)
-- RSVP button: if free, instant; if paid, Stripe payment sheet
-- On success: insert into `event_rsvps` with payment status
-- Event card shows "X members attending"
-- Check-in: admin can mark attended via admin panel
+### Feature 2: Waitlist Application System
 
-### 6.4 Private Member Directory
-- Search members by name, filter by tier
-- Each member card shows: first name + last initial, avatar, tier badge
-- "Connect" button (not "Follow" or "Add Friend")
-- Connection system: request → accept → both connected
-- No full names, no contact info, no public profiles
-- Profile only visible to connections
+**How it works**:
+- `frontend/components/WaitlistForm.tsx`: Client component with controlled form state using `useState`. Fields: `email` (type email, required), `first_name` (text, required), `last_name` (text, required), `phone` (tel, optional), `income_range` (select, required — options: "$200k-$500k", "$500k-$1M", "$1M-$5M", "$5M+"), `how_did_you_hear` (select, required — options: "Friend/Family", "Social Media", "Google", "Article/News", "Event", "Other"), `message` (textarea, optional). On submit → POST to `/api/waitlist` with JSON body. Shows loading state, then success/error state
+- `frontend/app/api/waitlist/route.ts`: Route handler. POST: validates body with Zod schema (email string().email(), first_name string().min(1), last_name string().min(1), phone optional, income_range enum, how_did_you_hear enum, message optional). If invalid → 400 with errors. If valid → insert into `waitlist_applications` table via `supabaseAdmin` (service role client). Return 201 with `{ success: true, id }`. Send confirmation email (async, don't await). GET: requires admin auth. Returns paginated list with search/filter params
+- `frontend/app/api/waitlist/[id]/route.ts`: Route handler with GET/PATCH/DELETE. All require admin auth. PATCH accepts `status` (enum pending/approved/rejected/waitlisted) and `admin_notes` (text). On status change to 'approved' → create member record from application data, send approval email. DELETE removes application and sends cancellation email (optional)
+- **Zod schema** (shared in `frontend/lib/validations/waitlist.ts`): Exports `waitlistSchema` and `waitlistStatusSchema` for reuse across form and API
 
-### 6.5 Salon (Private Forum)
-- Thread-based, no public visibility
-- Create post: title + body (rich text)
-- Reply to threads
-- Tags for filtering (Art, Travel, Current Affairs)
-- Only members can view or post
-- No likes, only replies (keeps it conversational, not performative)
+### Feature 3: Admin Dashboard
 
-### 6.6 PII Encryption
-- Fields: email, full name, phone, address
-- Encrypted at rest using Supabase Vault or pgcrypto
-- Only member can decrypt their own PII
-- Admin sees masked: j***@example.com
+**How it works**:
+- `frontend/app/dashboard/layout.tsx`: Server component layout. Fetches current user session. If no session → redirect to `/login`. Renders `<Sidebar>` component and main content area (children). Sidebar is fixed left (w-64), content has `ml-64 pl-6 pr-6`
+- `frontend/components/dashboard/Sidebar.tsx`: Client component. Logo at top (Archivo Black "GOON"). Nav items with lucide icons: Dashboard (`/dashboard`), Waitlist (`/dashboard/waitlist`), Members (`/dashboard/members`), Settings (`/dashboard/settings`). Active state highlights with primary color. Logout button at bottom
+- `frontend/app/dashboard/page.tsx`: Server component. Queries `waitlist_applications` for counts: `{ total: count(*), pending: count(status='pending'), approved: count(status='approved'), rejected: count(status='rejected') }`. Passes to `StatsCard` components. Also queries last 10 applications for compact table
+- `frontend/components/dashboard/StatsCard.tsx`: Props: `icon`, `label`, `value`, `color` (string for text color). Renders dark card with icon, number (text-3xl font-bold), label (text-sm text-[#8E8E93])
+- `frontend/components/dashboard/WaitlistTable.tsx`: Props: `applications`, `onApprove`, `onReject`, `onView`. Renders table with sortable columns (click header to sort asc/desc). Each row shows: name (first + last), email, income_range, status badge, created_at (formatted), action buttons (approve/reject/view). Uses `useState` for sort state
 
-### 6.7 Audit Trail
-- `audit_log` table: actor_id, action, target_id, timestamp
-- Actions: login, invite_accepted, rsvp_created, connection_requested, profile_updated
-- Read-only for admin, immutable
+### Feature 4: Database Schema & RLS
 
-### 6.8 RLS (Row Level Security)
-- Members table: user can read own; admin reads all; basic info visible to connected members
-- Events: all members can read; admin write
-- Event RSVPs: member sees own; admin sees all
-- Salon posts: all members can read/write
-- Connections: involved members only
-- Invitations: admin only
+**Implementation**: `frontend/supabase/schema.sql` — run this in Supabase SQL Editor. Creates 3 tables with RLS policies. The `members` table links to `auth.users` via `user_id` foreign key. `members.is_admin` boolean gates admin access. `audit_log` tracks all admin actions for accountability
 
-### 6.9 Stripe Integration
-- Webhook handlers for: checkout.session.completed, subscription.updated
-- On checkout complete: update member tier + renewal_date
-- On subscription failed: send warning email, downgrade after grace period
-- Payment method management in settings
+### Feature 5: Email Integration (Resend)
+
+**Implementation**:
+- `frontend/lib/email.ts`: Three functions:
+  - `sendWaitlistConfirmation(email, firstName)`: Sends HTML email with GOON branding (dark background, Archivo Black "GOON" header). Body: "Dear {firstName}, thank you for applying to Goon. We review applications within 48 hours..."
+  - `sendAdminNotification(application)`: Sends to admin email (from env var `ADMIN_EMAIL`). Body: "New application from {firstName} {lastName} ({email}) — Income: {income_range}"
+  - `sendApprovalEmail(application)`: Sends to applicant. Body: "Welcome to Goon, {firstName}. Your application has been approved. Create your account: {signupLink}" with button styled in primary color
+- All use `resend.emails.send({ from: 'Goon <goon@resend.dev>', to, subject, html })`
+- HTML templates use inline styles for email client compatibility
+
+### Feature 6: Admin Auth Helper
+
+**Implementation**:
+- `frontend/lib/admin.ts`: Exports `isAdmin()` function. Gets current user from Supabase server client. Queries `members` table with `user_id = auth.uid()`. Returns boolean from `is_admin` field. If no member record or user not found → returns false. Used in all admin API routes and dashboard layout
+
+### Feature 7: Unit Tests
+
+**Implementation**:
+- `frontend/__tests__/api/waitlist.test.ts`: Tests POST with valid data → 201. POST with invalid email → 400. GET without auth → 401. GET with auth → 200 with data
+- `frontend/__tests__/api/admin.test.ts`: Tests PATCH on waitlist without admin role → 403. Tests PATCH with admin role → 200
+- `frontend/__tests__/components/WaitlistForm.test.ts`: Tests form renders all fields. Tests submit with empty required field → shows error. Tests submit with valid data → calls API
+- Setup: `vitest.config.ts` with React testing library, `jest-dom` matchers
 
 ## 7. DATA MODEL
 
-### Tables (in `supabase/migrations/`)
+### waitlist_applications
 
-```sql
--- members
-CREATE TABLE members (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  auth_user_id UUID REFERENCES auth.users UNIQUE,
-  email TEXT UNIQUE NOT NULL,
-  display_name TEXT NOT NULL,
-  first_name TEXT NOT NULL,
-  last_initial TEXT NOT NULL,
-  avatar_url TEXT,
-  tier_id UUID REFERENCES membership_tiers(id),
-  renewal_date TIMESTAMPTZ,
-  tags TEXT[] DEFAULT '{}',
-  bio TEXT,
-  onboarding_complete BOOLEAN DEFAULT false,
-  created_at TIMESTAMPTZ DEFAULT now(),
-  updated_at TIMESTAMPTZ DEFAULT now()
-);
+| Field | Type | Constraints | Notes |
+|-------|------|-------------|-------|
+| id | UUID | PK, default gen_random_uuid() | Auto-generated |
+| email | TEXT | UNIQUE, NOT NULL | Must be unique |
+| first_name | TEXT | NOT NULL | |
+| last_name | TEXT | NOT NULL | |
+| phone | TEXT | NULLABLE | |
+| income_range | TEXT | NULLABLE | ENUM in app logic |
+| how_did_you_hear | TEXT | NULLABLE | ENUM in app logic |
+| message | TEXT | NULLABLE | |
+| status | TEXT | NOT NULL, DEFAULT 'pending', CHECK IN ('pending','approved','rejected','waitlisted') | |
+| admin_notes | TEXT | NULLABLE | Internal notes |
+| ip_address | TEXT | NULLABLE | For abuse prevention |
+| created_at | TIMESTAMPTZ | NOT NULL, DEFAULT now() | |
+| updated_at | TIMESTAMPTZ | NOT NULL, DEFAULT now() | Updated via trigger |
 
--- membership_tiers
-CREATE TABLE membership_tiers (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  name TEXT NOT NULL,
-  price_cents INTEGER NOT NULL,
-  interval TEXT DEFAULT 'year',
-  features JSONB DEFAULT '[]',
-  max_connections INTEGER DEFAULT 50,
-  created_at TIMESTAMPTZ DEFAULT now()
-);
+### members
 
--- invitations
-CREATE TABLE invitations (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  token TEXT UNIQUE NOT NULL,
-  email TEXT NOT NULL,
-  tier_id UUID REFERENCES membership_tiers(id),
-  invited_by UUID REFERENCES members(id),
-  used BOOLEAN DEFAULT false,
-  expires_at TIMESTAMPTZ NOT NULL,
-  created_at TIMESTAMPTZ DEFAULT now()
-);
+| Field | Type | Constraints | Notes |
+|-------|------|-------------|-------|
+| id | UUID | PK, default gen_random_uuid() | |
+| user_id | UUID | UNIQUE, NOT NULL, FK → auth.users(id) ON DELETE CASCADE | Links to Supabase Auth |
+| email | TEXT | UNIQUE, NOT NULL | Denormalized from auth |
+| first_name | TEXT | NOT NULL | |
+| last_name | TEXT | NOT NULL | |
+| phone | TEXT | NULLABLE | |
+| membership_tier | TEXT | NOT NULL, DEFAULT 'founding', CHECK IN ('founding','premium','vip') | |
+| membership_status | TEXT | NOT NULL, DEFAULT 'pending', CHECK IN ('pending','active','suspended','cancelled') | |
+| is_admin | BOOLEAN | NOT NULL, DEFAULT false | Admin gate |
+| bio | TEXT | NULLABLE | |
+| interests | TEXT[] | NULLABLE | PostgreSQL array |
+| photo_url | TEXT | NULLABLE | |
+| waitlist_application_id | UUID | FK → waitlist_applications(id) | Reference back |
+| created_at | TIMESTAMPTZ | NOT NULL, DEFAULT now() | |
+| updated_at | TIMESTAMPTZ | NOT NULL, DEFAULT now() | |
 
--- events
-CREATE TABLE events (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  title TEXT NOT NULL,
-  description TEXT,
-  venue_name TEXT,
-  venue_address TEXT,
-  start_time TIMESTAMPTZ NOT NULL,
-  end_time TIMESTAMPTZ,
-  price_cents INTEGER,
-  max_attendees INTEGER,
-  image_url TEXT,
-  created_by UUID REFERENCES members(id),
-  created_at TIMESTAMPTZ DEFAULT now()
-);
+### audit_log
 
--- event_rsvps
-CREATE TABLE event_rsvps (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  event_id UUID REFERENCES events(id) ON DELETE CASCADE,
-  member_id UUID REFERENCES members(id),
-  status TEXT DEFAULT 'confirmed', -- confirmed, waitlist, cancelled
-  payment_status TEXT, -- paid, free, refunded
-  stripe_session_id TEXT,
-  checked_in BOOLEAN DEFAULT false,
-  created_at TIMESTAMPTZ DEFAULT now(),
-  UNIQUE(event_id, member_id)
-);
-
--- connections
-CREATE TABLE connections (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  requester_id UUID REFERENCES members(id),
-  recipient_id UUID REFERENCES members(id),
-  status TEXT DEFAULT 'pending', -- pending, accepted, rejected
-  created_at TIMESTAMPTZ DEFAULT now(),
-  updated_at TIMESTAMPTZ DEFAULT now()
-);
-
--- forum_posts
-CREATE TABLE forum_posts (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  title TEXT NOT NULL,
-  body TEXT NOT NULL,
-  author_id UUID REFERENCES members(id),
-  tags TEXT[] DEFAULT '{}',
-  reply_count INTEGER DEFAULT 0,
-  created_at TIMESTAMPTZ DEFAULT now(),
-  updated_at TIMESTAMPTZ DEFAULT now()
-);
-
--- forum_comments
-CREATE TABLE forum_comments (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  post_id UUID REFERENCES forum_posts(id) ON DELETE CASCADE,
-  author_id UUID REFERENCES members(id),
-  body TEXT NOT NULL,
-  created_at TIMESTAMPTZ DEFAULT now()
-);
-
--- waitlist (existing)
-CREATE TABLE waitlist (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  email TEXT UNIQUE NOT NULL,
-  name TEXT,
-  created_at TIMESTAMPTZ DEFAULT now()
-);
-
--- audit_log
-CREATE TABLE audit_log (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  actor_id UUID REFERENCES members(id),
-  action TEXT NOT NULL,
-  target_id UUID,
-  metadata JSONB DEFAULT '{}',
-  created_at TIMESTAMPTZ DEFAULT now()
-);
-```
+| Field | Type | Constraints | Notes |
+|-------|------|-------------|-------|
+| id | UUID | PK, default gen_random_uuid() | |
+| actor_id | UUID | FK → auth.users(id) | Who did it |
+| action | TEXT | NOT NULL | e.g. 'approved_application', 'rejected_application', 'updated_member_tier' |
+| entity_type | TEXT | NOT NULL | e.g. 'waitlist_application', 'member' |
+| entity_id | UUID | NULLABLE | Which record |
+| metadata | JSONB | NULLABLE | Extra context |
+| ip_address | TEXT | NULLABLE | |
+| created_at | TIMESTAMPTZ | NOT NULL, DEFAULT now() | |
 
 ### Relationships
-- Member → Membership Tier (belongs_to)
-- Event → Event RSVP (has_many)
-- Member → Event RSVP (has_many)
-- Forum Post → Forum Comment (has_many)
-- Member → Connection (has_many through connections)
-- Invitation → Member (belongs_to inviter)
+
+- `waitlist_applications.id` → `members.waitlist_application_id` (optional 1:1)
+- `auth.users.id` → `members.user_id` (1:1, unique constraint)
+- `auth.users.id` → `audit_log.actor_id` (1:many)
 
 ## 8. AUTH
 
-### Implementation: Supabase Auth (email+password)
+**Implementation**: Pure Supabase Auth via `@supabase/ssr` — no NextAuth, no Clerk.
 
-**Setup:**
-- `@supabase/supabase-js` + `@supabase/ssr` for Next.js
-- Supabase project configured with email/password auth
-- Disable public signup (invite-only: create user via admin API)
+- **Sign up**: Email + password only. User data (first_name, last_name) passed via `options.data` in `signUp()`. Email confirmation required.
+- **Sign in**: Email + password. Session stored in HTTP-only cookies managed by `@supabase/ssr`.
+- **Session refresh**: Middleware checks and refreshes token on every request to protected routes.
+- **Logout**: API route calls `supabase.auth.signOut()` and clears cookies.
+- **Authorization**: Admin access gated by `members.is_admin` column via `admin.ts` helper — not by role claims in auth metadata (simpler, more transparent for this scale).
+- **Route protection**: Middleware redirects unauthenticated users to `/login`. Dashboard layout re-checks session and admin status on server.
 
-**Flow:**
-1. Invitation accepted → admin creates user via `supabase.auth.admin.createUser()`
-2. User receives email with "Set your password" link
-3. User sets password, logs in
-4. Session managed via cookies (`@supabase/ssr` middleware)
-
-**Key files:**
-```typescript
-// lib/supabase/client.ts - browser supabase client
-// lib/supabase/server.ts - server supabase client  
-// middleware.ts - refresh session on route changes
-// app/(auth)/login/page.tsx - login form
-// app/(auth)/callback/route.ts - auth callback handler
-```
-
-**Security:**
-- RLS policies on all tables (see section 6.8)
-- Rate limiting on login (Supabase built-in)
-- Session timeout: 7 days
-- No OAuth buttons (per spec, no provisioned credentials)
+**No OAuth buttons** — dead social buttons are worse than none. Pure email/password is the right choice for a small, admin-only system pre-launch.
 
 ## 9. FILES
 
+**Existing files to KEEP AS-IS**:
+- `app/page.tsx` (landing page)
+- `app/globals.css` (design system vars)
+- `tailwind.config.ts` (color extensions)
+- All existing layout and component files in `app/` that are part of landing page
+
+**Files to CREATE**:
+
 ```json
 [
-  "app/layout.tsx",
-  "app/page.tsx",
-  "app/globals.css",
-  "app/(auth)/login/page.tsx",
-  "app/(auth)/invite/[token]/page.tsx",
-  "app/(auth)/callback/route.ts",
-  "app/(dashboard)/layout.tsx",
-  "app/(dashboard)/dashboard/page.tsx",
-  "app/(dashboard)/events/page.tsx",
-  "app/(dashboard)/events/[id]/page.tsx",
-  "app/(dashboard)/directory/page.tsx",
-  "app/(dashboard)/salon/page.tsx",
-  "app/(dashboard)/salon/[id]/page.tsx",
-  "app/(dashboard)/profile/page.tsx",
-  "app/(dashboard)/profile/[id]/page.tsx",
-  "app/(dashboard)/settings/page.tsx",
-  "app/(dashboard)/onboarding/page.tsx",
-  "app/(dashboard)/admin/page.tsx",
-  "app/(dashboard)/admin/members/page.tsx",
-  "app/(dashboard)/admin/events/page.tsx",
-  "app/api/auth/signup/route.ts",
-  "app/api/auth/invite/route.ts",
-  "app/api/members/route.ts",
-  "app/api/members/[id]/route.ts",
-  "app/api/events/route.ts",
-  "app/api/events/[id]/rsvp/route.ts",
-  "app/api/connections/route.ts",
-  "app/api/connections/[id]/route.ts",
-  "app/api/salon/posts/route.ts",
-  "app/api/salon/posts/[id]/comments/route.ts",
-  "app/api/stripe/webhook/route.ts",
-  "app/api/stripe/create-checkout/route.ts",
-  "lib/supabase/client.ts",
-  "lib/supabase/server.ts",
-  "lib/supabase/middleware.ts",
-  "lib/stripe/client.ts",
-  "lib/stripe/webhooks.ts",
-  "lib/utils/cn.ts",
-  "lib/utils/format.ts",
-  "lib/utils/encryption.ts",
-  "components/ui/Button.tsx",
-  "components/ui/Card.tsx",
-  "components/ui/Input.tsx",
-  "components/ui/Modal.tsx",
-  "components/ui/Badge.tsx",
-  "components/ui/Avatar.tsx",
-  "components/ui/Toast.tsx",
-  "components/ui/Skeleton.tsx",
-  "components/layout/AppShell.tsx",
-  "components/layout/Sidebar.tsx",
-  "components/layout/TopBar.tsx",
-  "components/dashboard/EventCard.tsx",
-  "components/dashboard/ActivityFeed.tsx",
-  "components/events/EventGrid.tsx",
-  "components/events/RSVPModal.tsx",
-  "components/directory/MemberCard.tsx",
-  "components/directory/ConnectModal.tsx",
-  "components/salon/ThreadCard.tsx",
-  "components/salon/NewPostModal.tsx",
-  "components/salon/ReplyForm.tsx",
-  "middleware.ts",
-  "supabase/migrations/001_init.sql",
-  "supabase/migrations/002_seed_tiers.sql",
-  "supabase/seed.sql",
-  "docs/MVP_ROADMAP.md",
-  "next.config.js",
-  "tailwind.config.ts",
-  "tsconfig.json",
-  "package.json",
-  ".env.local.example"
+  "frontend/lib/supabase/client.ts",
+  "frontend/lib/supabase/server.ts",
+  "frontend/lib/supabase/middleware.ts",
+  "frontend/middleware.ts",
+  "frontend/app/(auth)/login/page.tsx",
+  "frontend/app/(auth)/signup/page.tsx",
+  "frontend/app/(auth)/auth/callback/route.ts",
+  "frontend/app/api/auth/logout/route.ts",
+  "frontend/app/api/waitlist/route.ts",
+  "frontend/app/api/waitlist/[id]/route.ts",
+  "frontend/app/(public)/waitlist/page.tsx",
+  "frontend/components/WaitlistForm.tsx",
+  "frontend/app/dashboard/layout.tsx",
+  "frontend/app/dashboard/page.tsx",
+  "frontend/app/dashboard/waitlist/page.tsx",
+  "frontend/app/dashboard/members/page.tsx",
+  "frontend/app/member/page.tsx",
+  "frontend/components/dashboard/Sidebar.tsx",
+  "frontend/components/dashboard/StatsCard.tsx",
+  "frontend/components/dashboard/WaitlistTable.tsx",
+  "frontend/lib/email.ts",
+  "frontend/lib/admin.ts",
+  "frontend/lib/validations/waitlist.ts",
+  "frontend/supabase/schema.sql",
+  "frontend/__tests__/api/waitlist.test.ts",
+  "frontend/__tests__/api/admin.test.ts",
+  "frontend/__tests__/components/WaitlistForm.test.ts",
+  "frontend/vitest.config.ts",
+  ".env.example"
 ]
 ```
 
-## 10. ACCEPTANCE
+## 10. ACCEPTANCE CHECKLIST
 
-- [ ] Landing page intact, design system preserved (globals.css, tailwind)
-- [ ] Auth: email+password login works via Supabase, no public signup
-- [ ] Invite flow: token generation → email → accept → onboard → dashboard
-- [ ] Dashboard: shows greeting, next event, recent activity
-- [ ] Events: listing, detail, RSVP (free + paid via Stripe)
-- [ ] Directory: search, filter, send/accept connection requests
-- [ ] Salon: create post, reply, thread list
-- [ ] Profile: view own, edit, view connected members
-- [ ] Membership tiers: seeded, displayed, stripe subscription functional
-- [ ] RLS: members see only what they should (own RSVPs, basic member info, etc.)
-- [ ] PII encryption: email/full name encrypted at rest
-- [ ] Audit trail: key actions logged to audit_log
-- [ ] Admin panel: manage members, events, invitations
-- [ ] Stripe webhook: handles checkout + subscription events
-- [ ] Responsive: mobile-first, works on tablet/desktop
-- [ ] Error states: loading skeletons, empty states, error toasts
-- [ ] Deployed to Vercel with env vars configured
+- [ ] `frontend/supabase/schema.sql` executed in Supabase SQL Editor — all 3 tables + RLS policies created
+- [ ] Supabase Auth enabled (email/password, email confirmation ON)
+- [ ] `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY` set in `.env.local`
+- [ ] `RESEND_API_KEY` set in `.env.local` — Resend verified sender `goon@resend.dev`
+- [ ] `npm install @supabase/ssr @supabase/supabase-js resend zod vitest @testing-library/react @testing-library/jest-dom`
+- [ ] Public `/waitlist` page renders branded form, submits application, shows success state
+- [ ] Waitlist form validation: empty required fields show error messages, invalid email rejected, valid submission saved to DB
+- [ ] API `POST /api/waitlist` returns 201 with valid data, 400 with invalid data
+- [ ] API `GET /api/waitlist` returns 401 without auth, 200 with auth + admin role
+- [ ] API `PATCH /api/waitlist/[id]` approves application → creates member record → sends approval email
+- [ ] Waitlist confirmation email sent on submission (check Resend dashboard)
+- [ ] Admin notification email sent on new application
+- [ ] Approval email sent with signup link when admin approves
+- [ ] Login page renders, authenticates with valid credentials, redirects to `/dashboard`
+- [ ] Login page shows error for invalid credentials
+- [ ] Signup page creates auth user, shows confirmation message
+- [ ] Middleware protects `/dashboard/*` — redirects to `/login` without session
+- [ ] Dashboard layout renders with sidebar navigation
+- [ ] Dashboard page shows 4 stats cards with correct counts from DB
+- [ ] Dashboard waitlist page shows full table with search, filter, sort
+- [ ] Waitlist table row actions: approve, reject, view detail (slide-in panel)
+- [ ] Approval creates member record, rejection does not
+- [ ] Audit log entries created for approve/reject actions
+- [ ] `/member` route shows "Coming Soon" member dashboard
+- [ ] Logout clears session and redirects to landing page
+- [ ] Admin-only API routes return 403 for non-admin users
+- [ ] All vitest tests pass (`npx vitest run`)
+- [ ] No dead OAuth buttons or placeholder features
+- [ ] Existing landing page unchanged and functional
