@@ -2,145 +2,86 @@
 
 import { useState } from "react";
 
-type Status = "idle" | "loading" | "success" | "error";
-
 export default function Waitlist() {
-  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [status, setStatus] = useState<Status>("idle");
-  const [message, setMessage] = useState<string>("");
+  const [status, setStatus] = useState<
+    "idle" | "loading" | "success" | "error"
+  >("idle");
+  const [message, setMessage] = useState("");
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (status === "loading") return;
+    if (!email) return;
 
     setStatus("loading");
-    setMessage("");
 
     try {
       const res = await fetch("/api/waitlist", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, interest: "" }),
+        body: JSON.stringify({ email }),
       });
+
       const data = await res.json();
 
       if (res.ok) {
         setStatus("success");
-        setMessage(
-          data.message ??
-            "Your request has been received. We'll be in touch as launch approaches."
-        );
-        setName("");
+        setMessage(data.message || "You're on the list.");
         setEmail("");
       } else {
         setStatus("error");
-        setMessage(data.error ?? "Unable to process your request at this time.");
+        setMessage(data.error || "Something went wrong.");
       }
     } catch {
       setStatus("error");
-      setMessage("Unable to process your request at this time.");
+      setMessage("Network error. Please try again.");
     }
   }
 
   return (
-    <section
-      id="waitlist"
-      className="relative py-24 px-6"
-      style={{
-        background:
-          "linear-gradient(180deg, #1C1C1E 0%, #2A1A15 60%, #3E2723 100%)",
-      }}
-    >
-      <div className="max-w-2xl mx-auto text-center">
-        <p className="eyebrow animate-fade-in">By Invitation</p>
-        <h2 className="section-title mt-4 animate-fade-in-delay-1">
-          Request Membership
+    <section id="waitlist" className="py-24 px-6">
+      <div className="max-w-xl mx-auto text-center">
+        <p className="font-inter text-[#C8A45C] text-sm tracking-widest uppercase mb-4">
+          Request an Invitation
+        </p>
+        <h2 className="font-playfair text-4xl md:text-5xl font-semibold text-[#F5F0E8] mb-4">
+          Be the first to be invited
         </h2>
-        <div className="ornate-divider mt-6">
-          <span className="diamond" aria-hidden />
-        </div>
-        <p
-          className="lede mt-8 animate-fade-in-delay-2"
-          style={{ fontSize: "1.05rem", maxWidth: "36rem", marginInline: "auto" }}
-        >
-          Membership is limited and reviewed by hand. Leave your name and email
-          to be considered for the founding list. All correspondence is held in
-          confidence.
+        <p className="font-inter text-[#F5F0E8]/70 mb-10">
+          Join the waitlist for founding member pricing and early access. No spam,
+          no public list — only a quiet note when the doors open.
         </p>
 
-        <form
-          onSubmit={handleSubmit}
-          className="mt-12 grid gap-5 text-left"
-          aria-label="Join the waitlist"
-        >
-          <div>
-            <label htmlFor="waitlist-name" className="field-label">
-              Name
-            </label>
-            <input
-              id="waitlist-name"
-              name="name"
-              type="text"
-              autoComplete="name"
-              required
-              minLength={2}
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              placeholder="Your name"
-              className="field"
-              disabled={status === "loading"}
-            />
-          </div>
-
-          <div>
-            <label htmlFor="waitlist-email" className="field-label">
-              Email
-            </label>
-            <input
-              id="waitlist-email"
-              name="email"
-              type="email"
-              autoComplete="email"
-              required
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="you@example.com"
-              className="field"
-              disabled={status === "loading"}
-            />
-          </div>
-
-          <div className="text-center mt-2">
-            <button
-              type="submit"
-              className="btn-gold"
-              disabled={status === "loading"}
-            >
-              {status === "loading" ? "Sending…" : "Join the Waitlist"}
-            </button>
-          </div>
-
-          {message && (
-            <p
-              role="status"
-              aria-live="polite"
-              className="font-body text-center mt-2"
-              style={{
-                color:
-                  status === "success"
-                    ? "var(--gold)"
-                    : status === "error"
-                    ? "#D9B5B5"
-                    : "var(--ivory-dim)",
-                fontSize: "1rem",
-                lineHeight: 1.6,
-              }}
-            >
-              {message}
-            </p>
-          )}
+        <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3">
+          <input
+            type="email"
+            required
+            value={email}
+            onChange={(e) => {
+              setEmail(e.target.value);
+              if (status !== "idle") setStatus("idle");
+            }}
+            placeholder="your@email.com"
+            className="flex-1 bg-[#3E2723]/40 border border-[#C8A45C]/20 rounded-sm px-5 py-4 text-[#F5F0E8] font-inter placeholder:text-[#F5F0E8]/40 focus:border-[#C8A45C] transition-colors"
+          />
+          <button
+            type="submit"
+            disabled={status === "loading"}
+            className="border border-[#C8A45C] text-[#C8A45C] px-8 py-4 rounded-sm font-inter text-sm tracking-widest uppercase hover:bg-[#C8A45C] hover:text-[#3E2723] transition-all duration-300 disabled:opacity-50"
+          >
+            {status === "loading" ? "Sending..." : "Request"}
+          </button>
         </form>
+
+        {message && (
+          <p
+            className={`mt-6 font-inter text-sm ${
+              status === "success" ? "text-[#C8A45C]" : "text-[#6B0F1A]"
+            }`}
+          >
+            {message}
+          </p>
+        )}
       </div>
     </section>
   );

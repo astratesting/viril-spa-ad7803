@@ -1,10 +1,13 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import "./globals.css";
 
+const GA_ID = process.env.NEXT_PUBLIC_GA_ID;
+
 export const metadata: Metadata = {
-  title: "Goon — A Private Sanctuary for the Discerning",
+  title: "Goon | Members-Only Spa & Salon — Coming Soon",
   description:
-    "Goon is an identity-verified, members-only spa and salon for lesbian and gay men — built in the spirit of an old European private members club. By invitation. Coming Soon.",
+    "Goon is a members-only spa and salon exclusively for verified lesbian women and gay men. A private house of beauty, discretion, and belonging. Coming soon.",
 };
 
 export default function RootLayout({
@@ -14,13 +17,23 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <head>
-        <link
-          href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700&display=swap"
-          rel="stylesheet"
-        />
-      </head>
-      <body className="antialiased">{children}</body>
+      <body className="antialiased">
+        {GA_ID && (
+          <>
+            <Script
+              src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`}
+              strategy="afterInteractive"
+            />
+            <Script id="ga4-init" strategy="afterInteractive">
+              {`window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', '${GA_ID}');`}
+            </Script>
+          </>
+        )}
+        {children}
+      </body>
     </html>
   );
 }

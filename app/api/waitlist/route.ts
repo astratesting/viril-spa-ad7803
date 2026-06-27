@@ -6,9 +6,7 @@ import path from "path";
 const DATA_FILE = path.join(process.cwd(), "data", "waitlist.json");
 
 interface WaitlistEntry {
-  name: string;
   email: string;
-  interest: string;
   subscribedAt: string;
 }
 
@@ -31,37 +29,14 @@ async function saveEntries(entries: WaitlistEntry[]) {
   await writeFile(DATA_FILE, JSON.stringify(entries, null, 2));
 }
 
-const VALID_INTERESTS = new Set([
-  "",
-  "founding",
-  "full",
-  "associate",
-  "undecided",
-]);
-
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { name, email, interest } = body;
+    const { email } = body;
 
     if (!email || typeof email !== "string") {
       return NextResponse.json(
         { error: "A valid email address is required." },
-        { status: 400 }
-      );
-    }
-
-    if (!name || typeof name !== "string" || name.trim().length < 2) {
-      return NextResponse.json(
-        { error: "Please provide your name." },
-        { status: 400 }
-      );
-    }
-
-    const interestValue = typeof interest === "string" ? interest : "";
-    if (!VALID_INTERESTS.has(interestValue)) {
-      return NextResponse.json(
-        { error: "Invalid membership interest selection." },
         { status: 400 }
       );
     }
@@ -79,32 +54,21 @@ export async function POST(request: Request) {
 
     if (entries.some((e) => e.email === normalized)) {
       return NextResponse.json(
-        {
-          message:
-            "You're already on the waitlist. We'll be in touch as launch approaches.",
-        },
+        { message: "You're already on the waitlist. We'll be in touch." },
         { status: 200 }
       );
     }
 
-    entries.push({
-      name: name.trim(),
-      email: normalized,
-      interest: interestValue,
-      subscribedAt: new Date().toISOString(),
-    });
+    entries.push({ email: normalized, subscribedAt: new Date().toISOString() });
     await saveEntries(entries);
 
     return NextResponse.json(
-      {
-        message:
-          "Your request has been received. We'll be in touch as launch approaches.",
-      },
+      { message: "Welcome to the waitlist. We'll be in touch soon." },
       { status: 201 }
     );
   } catch {
     return NextResponse.json(
-      { error: "Unable to process your request at this time." },
+      { error: "Something went wrong. Please try again." },
       { status: 500 }
     );
   }

@@ -1,80 +1,63 @@
+"use client";
+
 export default function Hero() {
   return (
-    <section
-      id="hero"
-      className="relative min-h-screen flex flex-col items-center justify-center text-center px-6 overflow-hidden"
-      style={{
-        background:
-          "radial-gradient(ellipse at 50% 30%, #3E2723 0%, #2A1A15 45%, #1C1C1E 100%)",
-      }}
-    >
-      {/* Ambient gold glow */}
-      <div
-        aria-hidden
-        className="absolute inset-0 pointer-events-none animate-flicker"
-        style={{
-          background:
-            "radial-gradient(circle at 50% 38%, rgba(197,168,76,0.16) 0%, transparent 55%)",
-        }}
-      />
-
-      {/* Crest */}
-      <div className="crest mb-10 animate-fade-in">
-        <span className="monogram">G</span>
+    <section className="relative min-h-screen flex items-center justify-center px-6 overflow-hidden">
+      {/* Ambient background effects */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 rounded-full blur-3xl bg-[#C8A45C]/5" />
+        <div className="absolute bottom-1/4 right-1/4 w-80 h-80 rounded-full blur-3xl bg-[#6B0F1A]/10" />
       </div>
 
-      {/* COMING SOON badge */}
-      <div className="ribbon animate-fade-in-delay-1">
-        <span className="dot" aria-hidden />
-        <span>Coming Soon</span>
-      </div>
+      <div className="relative z-10 text-center max-w-4xl mx-auto">
+        {/* Coming Soon badge */}
+        <div className="inline-flex items-center gap-2 border border-[#C8A45C]/40 rounded-full px-5 py-2 mb-10 bg-[#C8A45C]/5 backdrop-blur-sm">
+          <span className="w-2 h-2 rounded-full bg-[#C8A45C] animate-pulse" />
+          <span className="text-[#C8A45C] text-sm font-inter tracking-widest uppercase">
+            Coming Soon
+          </span>
+        </div>
 
-      {/* Wordmark */}
-      <h1 className="wordmark mt-8 animate-fade-in-delay-1">GOON</h1>
-      <span className="wordmark-underline" aria-hidden />
+        {/* Brand name */}
+        <h1 className="font-playfair text-7xl md:text-9xl font-bold tracking-wider text-gold-gradient mb-6">
+          Goon
+        </h1>
 
-      {/* Tagline */}
-      <p
-        className="font-display italic mt-10 animate-fade-in-delay-2"
-        style={{
-          color: "#F5F0E8",
-          fontSize: "clamp(1.25rem, 2.4vw, 1.9rem)",
-          letterSpacing: "0.02em",
-          lineHeight: 1.4,
-          maxWidth: "44rem",
-        }}
-      >
-        A private sanctuary, by invitation only.
-      </p>
+        {/* Tagline */}
+        <p className="font-playfair text-2xl md:text-3xl text-[#F5F0E8]/90 italic mb-8">
+          A private house of beauty, discretion, and belonging.
+        </p>
 
-      {/* Value prop */}
-      <p
-        className="font-body mt-6 animate-fade-in-delay-3"
-        style={{
-          color: "rgba(245, 240, 232, 0.74)",
-          fontSize: "1.1rem",
-          lineHeight: 1.8,
-          maxWidth: "40rem",
-        }}
-      >
-        An identity-verified, members-only spa and salon conceived exclusively
-        for lesbian and gay men — built in the spirit of an old European
-        private members club. Discretion is not a feature here; it is the
-        architecture.
-      </p>
+        {/* Divider */}
+        <div className="gold-divider w-32 mx-auto mb-8" />
 
-      {/* CTA */}
-      <a
-        href="#waitlist"
-        className="btn-gold mt-12 animate-fade-in-delay-3"
-        aria-label="Join the waitlist"
-      >
-        Join the Waitlist
-      </a>
+        {/* Value proposition */}
+        <p className="font-inter text-lg md:text-xl text-[#F5F0E8]/70 max-w-2xl mx-auto leading-relaxed mb-12">
+          A members-only spa and salon exclusively for verified lesbian women and
+          gay men. Where old-world European refinement meets a community of one&apos;s
+          own.
+        </p>
 
-      {/* Bottom gold rule */}
-      <div className="ornate-divider mt-20 opacity-80">
-        <span className="fleuron">✦</span>
+        {/* CTA — waitlist is the only call to action */}
+        <a
+          href="#waitlist"
+          className="inline-flex items-center gap-2 border border-[#C8A45C] text-[#C8A45C] px-8 py-4 rounded-sm font-inter text-sm tracking-widest uppercase hover:bg-[#C8A45C] hover:text-[#3E2723] transition-all duration-300"
+        >
+          Request an Invitation
+          <svg
+            className="w-4 h-4"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M19 9l-7 7-7-7"
+            />
+          </svg>
+        </a>
       </div>
     </section>
   );
