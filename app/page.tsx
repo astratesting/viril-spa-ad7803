@@ -89,10 +89,10 @@ export default function Home() {
           <div className="hidden md:flex items-center gap-10">
             <a href="#benefits" className="nav-link">The Sanctuary</a>
             <a href="#faq" className="nav-link">Questions</a>
-            <a href="#waitlist" className="btn-ghost">Request Invitation</a>
+            <a href="#waitlist" className="btn-ghost">Join the Waitlist</a>
           </div>
           <div className="md:hidden flex items-center gap-4">
-            <a href="#waitlist" className="btn-ghost" style={{ padding: "0.6rem 1rem", fontSize: "0.62rem" }}>Invite</a>
+            <a href="#waitlist" className="btn-ghost" style={{ padding: "0.6rem 1rem", fontSize: "0.62rem" }}>Waitlist</a>
           </div>
         </div>
       </nav>
@@ -138,7 +138,7 @@ export default function Home() {
 
           {/* Tagline */}
           <p className="font-display italic text-2xl md:text-3xl mt-8 animate-fade-in-delay-2" style={{ color: "var(--gold)" }}>
-            A Private Sanctuary for the Discerning
+            Old European Aristocratic Luxury — For Lesbian &amp; Gay Men
           </p>
 
           {/* Ornate divider */}
@@ -159,7 +159,7 @@ export default function Home() {
 
           {/* CTA */}
           <div className="mt-12 animate-fade-in-delay-3">
-            <a href="#waitlist" className="btn-gold">Request Membership Invitation</a>
+            <a href="#waitlist" className="btn-gold">Join the Founding Waitlist</a>
           </div>
         </div>
       </section>
@@ -281,7 +281,7 @@ export default function Home() {
 
               <div className="text-center">
                 <button type="submit" disabled={status === "loading"} className="btn-gold">
-                  {status === "loading" ? "Sending…" : "Request Membership Invitation"}
+                  {status === "loading" ? "Sending…" : "Join the Founding Waitlist"}
                 </button>
               </div>
             </form>
@@ -318,7 +318,7 @@ export default function Home() {
 
           <div className="text-center mt-16">
             <a href="#waitlist" className="btn-ghost" style={{ color: "var(--burgundy)", borderColor: "rgba(92,26,26,0.5)" }}>
-              Request an Invitation
+              Join the Founding Waitlist
             </a>
           </div>
         </div>
