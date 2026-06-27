@@ -108,7 +108,7 @@ export default function Hero() {
             (e.currentTarget as HTMLAnchorElement).style.background = "#C5A55A";
           }}
         >
-          Request an Invitation
+          Request Membership Invitation
         </a>
       </div>
     </section>
